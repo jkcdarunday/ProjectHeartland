@@ -1,0 +1,156 @@
+\documentclass{sigchi}
+
+% Use this command to override the default ACM copyright statement
+% (e.g. for preprints).  Consult the conference website for the
+% camera-ready copyright statement.
+
+%% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+\toappear{One does not simply copy this document.}
+%% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+
+% Arabic page numbers for submission.  Remove this line to eliminate
+% page numbers for the camera ready copy
+% \pagenumbering{arabic}
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead 
+\usepackage[T1]{fontenc}
+\usepackage{txfonts}
+\usepackage{mathptmx}
+\usepackage[pdftex]{hyperref}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{textcomp}
+% Some optional stuff you might like/need.
+\usepackage{microtype} % Improved Tracking and Kerning
+% \usepackage[all]{hypcap}  % Fixes bug in hyperref caption linking
+\usepackage{ccicons}  % Cite your images correctly!
+\usepackage[utf8]{inputenc} % for a UTF8 editor only
+
+% If you want to use todo notes, marginpars etc. during creation of your draft document, you
+% have to enable the "chi_draft" option for the document class. To do this, change the very first
+% line to: "\documentclass[chi_draft]{sigchi}". You can then place todo notes by using the "\todo{...}"
+% command. Make sure to disable the draft option again before submitting your final document.
+\usepackage{todonotes}
+
+% Paper metadata (use plain text, for PDF inclusion and later
+% re-using, if desired).  Use \emtpyauthor when submitting for review
+% so you remain anonymous.
+\def\plaintitle{University of the Philippines Los Baños Online Student Information System}
+\def\plainauthor{Jan Keith Darunday, Ferriel Lisandro Melarpis, Toni-Jan Keith Monserrat, and Reginald Neil Recario}
+\def\emptyauthor{}
+\def\plainkeywords{Authors' choice; of terms; separated; by
+  semicolons; include commas, within terms only; required.}
+\def\plaingeneralterms{Documentation, Standardization}
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{
+    \def\UrlFont{\sf}
+  }{
+    \def\UrlFont{\small\bf\ttfamily}
+  }}
+\makeatother
+\urlstyle{leo}
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages, to give it a
+% fighting chance of not being over-written, since its job is to
+% redefine many LaTeX commands.
+\definecolor{linkColor}{RGB}{6,125,233}
+\hypersetup{%
+  pdftitle={\plaintitle},
+% Use \plainauthor for final version.
+%  pdfauthor={\plainauthor},
+  pdfauthor={\emptyauthor},
+  pdfkeywords={\plainkeywords},
+  bookmarksnumbered,
+  pdfstartview={FitH},
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=linkColor,
+  breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+% \newcommand\tabhead[1]{\small\textbf{#1}}
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+\title{\plaintitle}
+
+%Jan Keith Darunday, Ferriel Lisandro Melarpis, Toni-Jan Keith Monserrat, and Reginald Neil Recario
+\numberofauthors{4}
+\author{%
+  \alignauthor{Jan Keith Darunday\\
+    \affaddr{Los Ba\~{n}os, Philippines}\\
+    \email{jcdarunday@up.edu.ph}}\\
+  \alignauthor{Ferriel Lisandro Melarpis\\
+    \affaddr{Los Ba\~{n}os, Philippines}\\
+    \email{fbmelarpis@up.edu.ph}}\\
+  \alignauthor{Toni-Jan Keith Monserrat\\
+    \affaddr{Los Ba\~{n}os, Philippines}\\
+    \email{tonijanmonserrat@gmail.com}}\\
+%   \alignauthor{Reginald Neil Recario\\
+%     \affaddr{Los Ba\~{n}os, Philippines}\\
+%     \email{rcrecario@up.edu.ph}}\\
+}
+
+\maketitle
+
+\begin{abstract}
+  UPDATED---\today. This sample paper describes the formatting
+  requirements for SIGCHI conference proceedings, and offers
+  recommendations on writing for the worldwide SIGCHI
+  readership. Please review this document even if you have submitted
+  to SIGCHI conferences before, as some format details have changed
+  relative to previous years. Abstracts should be about 150 words and
+  are required.
+\end{abstract}
+
+\category{K.3.2}{Computing Milieux}{COMPUTERS AND EDUCATION }{Computer and Information Science Education }
+
+\keywords{\plainkeywords}
+
+\section{Introduction}
+
+This format is to be used for submissions that are published in the
+conference proceedings. We wish to give this volume a consistent,
+high-quality appearance. We therefore ask that authors follow some
+simple guidelines. You should format your paper exactly like this
+document. The easiest way to do this is to replace the content with
+your own material.  This document describes how to prepare your
+submissions using \LaTeX.
+
+\section{Another Section}
+On each page your material should fit within a rectangle of 7 $\times$
+9.15 inches (18 $\times$ 23.2 cm), centered on a US Letter page (8.5
+$\times$ 11 inches), beginning 0.85 inches (1.9 cm) from the top of
+the page, with a 0.3 inches (0.85 cm) space between two 3.35 inches
+(8.4 cm) columns. Right margins should be justified, not
+ragged. Please be sure your document and PDF are US letter and not A4. \cite{acm_categories,cavender:writing,CHINOSAUR:venue,psy:gangnam}
+
+% REFERENCES FORMAT
+% References must be the same font size as other body text.
+\bibliographystyle{sigchi}
+\bibliography{paper}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
