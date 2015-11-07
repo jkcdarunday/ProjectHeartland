@@ -184,59 +184,21 @@ a student in their respective classes. Enrique (2001) then developed a Schedule 
 module that was responsible for managing and viewing the schedule of a subject, a room, or a
 teacher.
 
-The UPLB University Data Resource Network is another system used in UPLB. It was
-created in 2003 and was also designed to be able to support modules. Gimotea (2003) was the
-one who developed the Curricular, Degree Course, Class Schedules, and Room Assignment
-Module which gave it functionalities similar to those that registration systems have like the
-manipulation of schedules and rooms for classes and courses.
 After a few years, Javier, et al. (2005) developed the first version of UPLB’s Online
 Registration System called SystemOne. This system was also extensible through modularity. In
 this version, SystemOne used the Java programming language for implementing the Enlistor and
 Registrar module, PHP 5 for the Department module and MySQL as the Database Management
 System (DBMS).
 
-Because SystemOne was designed to be extensible through its support for modules, various
-modules for it has been developed around the same time as the development of original
-SystemOne. Curativo, et al. (2005) developed a web service module so that SystemOne can be
-accessible using a web browser. Before that, users had to use the Java application for SystemOne
-for them to be able to access it. Cardenas, et al. (2005) also developed another module called the
-Data Manager Interface (DMI) which was responsible for allowing SystemOne to access a
-Database Management System (DBMS) and converting data given by the Office of the
-University Registrar through the REGIST system into a database that can be understood by
-SystemOne. Both of these modules also used the Java programming language and supported the
-MySQL DBMS.
-
-In the year 2010, the development of the UPLB SystemOne V2 began. This version also
+In 2010, the development of the UPLB SystemOne V2 began. This version also
 used the Java programming language and the MySQL DBMS and was also modular. However,
 the difference of this new system from the previous system was that even the core functions were
 divided into modules and was developed separately.
-
-Payoyo (2010) developed the Announcement, Registrar and Observer Module for
-SystemOne V2 which allowed support for announcement and gave representatives from the
-registrar an interface to manage the courses to be offered among other things. Granada (2010)
-developed the Subject Planner and Student’s Checklist which gave students the ability to view
-their checklist and plan their schedule of subjects.
-
-At the same time, Guevarra (2010) developed a Mobile Bluetooth Interface for Nokia 60
-Series Smartphones using Symbian C++. This allowed users of the Nokia 60 Series Smartphones
-to access SystemOne on their smartphones.
 
 In 2012, the third and current version of SystemOne was developed by the SystemOne
 Development Team. This system, unlike the previous versions that used Java, used the PHP
 programming language along with the MySQL DBMS. Like the second version, this system
 supports modules and its core functions are also implemented as modules.
-
-Unfortunately, it is now a known fact that Java is rather slow compared to the alternatives.
-Jelovic (n.d.) stated in one of his online articles that “anybody that has ever used a non-trivial
-Java program or has programmed in Java knows that Java is slower than native programs written
-in C++”. This is just one among the number of criticisms that Java receives when it comes to its
-speed. Despite this, Java is known to be easy to use and was designed to be good for
-network-based applications.
-
-Another programming language used in the implementations of SystemOne is the PHP
-programming language. This programming language is also known to be slow when it comes to
-large-scale web applications. What more is that the flavor of PHP that was used in the third
-version called Suhosin is known to be a bit slower than than the original PHP.
 
 There was one study that focused on the speed and response time of SystemOne. Crespo
 (2014) wrote a study entitled “Comparing the Response and Rendering Time of PHP-based
@@ -299,24 +261,27 @@ an error reply will be sent.
 \subsubsection{Cross-Site HTTP Requests}
 
 The system will be designed to support HTTP Requests from specific domains
-where the frontend code will be stored. This is to be able to outsource the load
-added by frontend data being served as it will take a significant amount of
-networking bandwidth to serve the images and scripts included. This will also
-allow the frontend to have heavier images and scripts without affecting the 
-performance of the main server.
+where the frontend code will be stored through the Access-Control-Allow-Origin header. 
+This is to be able to outsource the load added by frontend data being served as 
+it will take a significant amount of networking bandwidth to serve the images and
+scripts included. This will also allow the frontend to have heavier images and 
+scripts without affecting the performance of the main server.
 
 
 \subsection{Frontend}
 
 The frontend will be a static web application that fires REST requests to the
-server. The Javascript Object Notation (JSON) will be used to specify parameters
+backend server. The Javascript Object Notation (JSON) will be used to specify parameters
 for commands that require sending non-anonymous data while a normal GET request
-can be used for reading data. The frontend will also have an enlistment queue
+will be used for reading anonymous data. The frontend will also have an enlistment queue
 where the user can setup which subjects he/she would like to enlist and then
 send them as a batch to the server. This would lessen the number of connections
 that the server will receive lessening the number of threads running in the 
 backend.
 
+The design for the frontend will try to follow Google's Material Design 
+Specification although not strictly. Along with this, it shall support mobile
+platforms by implementing Responsive Design. 
 
 
 
