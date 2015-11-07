@@ -167,6 +167,140 @@ supports fast queries and uses a non-volatile memory storage, the last one would
 be a full-fledged relational database system that will be used for persistent
 storage.
 
+\section{Related Work}
+
+There is a limited number of papers that specifically discuss SystemOne. These papers
+mostly focus on the various modules that provide different kinds of functionality for SystemOne
+and the features to be created rather than the speed and feasibility of the use of the system.
+Suayan (1997) developed one of the first registration systems used in UPLB called the
+UPLB RegisNet. This system was designed to automate the pre-enlistment of subjects for
+students.
+
+Meanwhile, the UPLB Academic Information System was created and had support for
+modularity. Through its modularity, various modules were created for it. Cruz (2001) created a
+Subjects module that gave it the ability to add, edit, and delete subjects from a list of subjects and
+Almodiel (2001) developed a module that allowed teachers to add, search, and view the grades of
+a student in their respective classes. Enrique (2001) then developed a Schedule of Classes
+module that was responsible for managing and viewing the schedule of a subject, a room, or a
+teacher.
+
+The UPLB University Data Resource Network is another system used in UPLB. It was
+created in 2003 and was also designed to be able to support modules. Gimotea (2003) was the
+one who developed the Curricular, Degree Course, Class Schedules, and Room Assignment
+Module which gave it functionalities similar to those that registration systems have like the
+manipulation of schedules and rooms for classes and courses.
+After a few years, Javier, et al. (2005) developed the first version of UPLB’s Online
+Registration System called SystemOne. This system was also extensible through modularity. In
+this version, SystemOne used the Java programming language for implementing the Enlistor and
+Registrar module, PHP 5 for the Department module and MySQL as the Database Management
+System (DBMS).
+
+Because SystemOne was designed to be extensible through its support for modules, various
+modules for it has been developed around the same time as the development of original
+SystemOne. Curativo, et al. (2005) developed a web service module so that SystemOne can be
+accessible using a web browser. Before that, users had to use the Java application for SystemOne
+for them to be able to access it. Cardenas, et al. (2005) also developed another module called the
+Data Manager Interface (DMI) which was responsible for allowing SystemOne to access a
+Database Management System (DBMS) and converting data given by the Office of the
+University Registrar through the REGIST system into a database that can be understood by
+SystemOne. Both of these modules also used the Java programming language and supported the
+MySQL DBMS.
+
+In the year 2010, the development of the UPLB SystemOne V2 began. This version also
+used the Java programming language and the MySQL DBMS and was also modular. However,
+the difference of this new system from the previous system was that even the core functions were
+divided into modules and was developed separately.
+
+Payoyo (2010) developed the Announcement, Registrar and Observer Module for
+SystemOne V2 which allowed support for announcement and gave representatives from the
+registrar an interface to manage the courses to be offered among other things. Granada (2010)
+developed the Subject Planner and Student’s Checklist which gave students the ability to view
+their checklist and plan their schedule of subjects.
+
+At the same time, Guevarra (2010) developed a Mobile Bluetooth Interface for Nokia 60
+Series Smartphones using Symbian C++. This allowed users of the Nokia 60 Series Smartphones
+to access SystemOne on their smartphones.
+
+In 2012, the third and current version of SystemOne was developed by the SystemOne
+Development Team. This system, unlike the previous versions that used Java, used the PHP
+programming language along with the MySQL DBMS. Like the second version, this system
+supports modules and its core functions are also implemented as modules.
+
+Unfortunately, it is now a known fact that Java is rather slow compared to the alternatives.
+Jelovic (n.d.) stated in one of his online articles that “anybody that has ever used a non-trivial
+Java program or has programmed in Java knows that Java is slower than native programs written
+in C++”. This is just one among the number of criticisms that Java receives when it comes to its
+speed. Despite this, Java is known to be easy to use and was designed to be good for
+network-based applications.
+
+Another programming language used in the implementations of SystemOne is the PHP
+programming language. This programming language is also known to be slow when it comes to
+large-scale web applications. What more is that the flavor of PHP that was used in the third
+version called Suhosin is known to be a bit slower than than the original PHP.
+
+There was one study that focused on the speed and response time of SystemOne. Crespo
+(2014) wrote a study entitled “Comparing the Response and Rendering Time of PHP-based
+against Javascript-based SystemOne”. This study did a comparison on how much faster or slower
+SystemOne would be had it been implemented in Javascript using the NodeJS interpreter. Her
+study detailed the performance of her own Javascript-based implementation against the
+PHP-based implementation. The results of her study showed that the Javascript-based
+implementation yielded a 52 percent increase in overall speed.
+
+These results seem to be very promising considering the fact that NodeJS is known to not be
+able to take full advantage of a server computer that has multiple cores yet. This shows that
+SystemOne could have been faster if the right choices were made.
+These studies show a history of Online Registration Systems used in UPLB. It can be seen in
+the papers and articles cited that the use of the best and fastest technology has not really been
+given consideration.
+
+\section{Methodology}
+
+\subsection{Database}
+
+The system will utilized three database systems. These database systems are as
+follows:
+\begin{enumerate}
+\item High-Speed Read and Write Storage System - This will be shared across all
+clusters. This needs to high speed because it will used to store information
+that change very fast and is read repeatedly such as the number of slots for
+every subject.
+
+\item High-Speed Read and Medium-Speed Write Relational Database System - Also 
+shared across all clusters, this will contain data and information that are not
+changed often but are read a repeatedly a lot such as the information for subjects
+and their dependencies, user accounts, and recommended courses.
+
+\item Persistent Relational Database System - This will be used as the permanent
+storage for all data. The other two storage and database systems will synchronize
+to this database at specific intervals.
+\end{enumerate}
+
+
+
+\subsection{Backend}
+
+The backend will be a server that serves a Representational State Transfer (REST)
+Application Programming Interface (API) through the Hypertext Transfer Protocol
+(HTTP). The system's backend shall have multithreading support. A thread will be 
+spawned for every successful HTTP connection. This thread will handle its own
+associated connection and wait for a command before processing it and giving a 
+reply. If a command is not received or completed after a specified amount of
+time, a timeout will occur and the connection will be dropped along with its
+corresponding thread being deallocated from the memory. 
+
+\subsubsection{Conflict Checking}
+
+Every time a modification or addition is done on a student's schedule, the 
+backend will check for conflicts before executing the specified action. 
+To do this, a bitwise AND will be done on the current user's schedule and the
+schedule of the subject to be inserted. If the resulting value is not 0 then
+an error reply will be sent.
+
+
+\subsection{Frontend}
+
+
+
 
 % % REFERENCES FORMAT
 % % References must be the same font size as other body text.
