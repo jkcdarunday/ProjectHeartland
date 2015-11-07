@@ -5,7 +5,7 @@
 % camera-ready copyright statement.
 
 %% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
-\toappear{One does not simply copy this document.}
+%\toappear{One does not simply copy this document.}
 %% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
 
 % Arabic page numbers for submission.  Remove this line to eliminate
@@ -111,42 +111,63 @@
 
 \maketitle
 
-\begin{abstract}
-  UPDATED---\today. This sample paper describes the formatting
-  requirements for SIGCHI conference proceedings, and offers
-  recommendations on writing for the worldwide SIGCHI
-  readership. Please review this document even if you have submitted
-  to SIGCHI conferences before, as some format details have changed
-  relative to previous years. Abstracts should be about 150 words and
-  are required.
-\end{abstract}
-
-\category{K.3.2}{Computing Milieux}{COMPUTERS AND EDUCATION }{Computer and Information Science Education }
-
-\keywords{\plainkeywords}
+% \begin{abstract}
+% \end{abstract}
+% 
+% \category{K.3.2}{Computing Milieux}{COMPUTERS AND EDUCATION }{Computer and Information Science Education }
+% 
+\keywords{student; information; registration; enrollment}
 
 \section{Introduction}
 
-This format is to be used for submissions that are published in the
-conference proceedings. We wish to give this volume a consistent,
-high-quality appearance. We therefore ask that authors follow some
-simple guidelines. You should format your paper exactly like this
-document. The easiest way to do this is to replace the content with
-your own material.  This document describes how to prepare your
-submissions using \LaTeX.
+In campuses under the University of the Philippines (UP) System, students have 
+more freedom to choose the subjects that they want to enroll in compared to other
+universities. UP employs the Revitalized General Education Program (RGEP) that
+requires students to take General Education (GE) courses. They have the ability to
+choose which of these courses they would like to enlist in.
+These GE courses are courses that allow students from any degree program to enroll
+unlike major courses that are only available to certain degree programs. The
+ability to choose one’s subjects implied that almost all students will need to
+manually fill-up their list of courses to enroll to before the beginning of 
+every semester. Moreover, courses are divided into sections each of which have 
+a limited number of slots for students that it can accommodate. This meant that 
+not only will the students need to manually check for conflicts in their 
+schedules, they will also need to check if the course that they want to enlist 
+in still has slots remaining.
 
-\section{Another Section}
-On each page your material should fit within a rectangle of 7 $\times$
-9.15 inches (18 $\times$ 23.2 cm), centered on a US Letter page (8.5
-$\times$ 11 inches), beginning 0.85 inches (1.9 cm) from the top of
-the page, with a 0.3 inches (0.85 cm) space between two 3.35 inches
-(8.4 cm) columns. Right margins should be justified, not
-ragged. Please be sure your document and PDF are US letter and not A4. \cite{acm_categories,cavender:writing,CHINOSAUR:venue,psy:gangnam}
+The complexity of this process along with the increasing availability of Internet access to
+the public incited the development of computerized Online Registration Systems (ORS). These
+systems allowed the enlistment, cancellation, and swapping of slots for courses over the Internet.
+These systems also did the checking of conflicting subjects and availability of slots automatically
+so that students will not need to do them manually.
+In the University of the Philippines Los Baños (UPLB), the Online Registration System that
+is used as of the writing of this paper is called SystemOne. This system has undergone various
+revisions and improvements as old technology become deprecated by new ones and problems
+encountered in previous versions are fixed. The most recent one identifies itself as the third
+version and is code-named “Decaf”. However, this system did not prove to be efficient enough
+for the student population of UPLB despite several rewrites and revisions.
 
-% REFERENCES FORMAT
-% References must be the same font size as other body text.
-\bibliographystyle{sigchi}
-\bibliography{paper}
+As a solution, we propose that there needs to be a complete rewrite of 
+the system. Because SystemOne is originally written in the PHP programming 
+language which has been known to be slow, using a faster programming language 
+would be an improvement. SystemOne also has its database connection as its 
+bottleneck but it tries to solve this by using memcache as a caching system. 
+However, this wasn't efficient enough as queries executed by the backend is too
+dynamic which makes the results hard to cache. In order to alleviate the effects
+of this bottlneck, we propose that three differnt database/storage systems will
+be used. One will be a RAM-based storage system with high-speed read/write that
+does not need to support queries, another would be a database system that 
+supports fast queries and uses a non-volatile memory storage, the last one would
+be a full-fledged relational database system that will be used for persistent
+storage.
+
+
+% % REFERENCES FORMAT
+% % References must be the same font size as other body text.
+% \bibliographystyle{sigchi}
+% \bibliography{paper}
+
+\cleardoublepage
 
 \end{document}
 
