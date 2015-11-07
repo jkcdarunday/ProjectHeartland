@@ -283,7 +283,36 @@ The design for the frontend will try to follow Google's Material Design
 Specification although not strictly. Along with this, it shall support mobile
 platforms by implementing Responsive Design. 
 
+%TODO: Should be 1/2
+\subsection{Evaluation}
 
+The system shall be evaluated by its stability, efficiency, ease of use, and
+integration. 
+
+Its stability will be evaluated by running a fuzzer software on the different
+commands that the backend server accepts. If the fuzzer finds strings that 
+causes the backend to crash, show an error, or produce the wrong output then the
+system fails the stability test. If this happens, the errors shall be fixed and
+the system will again undergo the stability evaluation.
+
+The system's efficiency will be evaluated by running benchmarks on the system.
+Information such as requests per second, time per request, and transfer rate
+of each function will be collected. The system will also be tested if can 
+handle medium and heavy workloads by using load testing tools and services.
+These tests will use combinations of the different functions at ratios expected
+during actual use of the system. 
+
+The system's ease of use will be evaluated through a survey along with additional
+criteria about other aspects of the system.
+The survey will be done with at least 500 respondents that will test the system
+and rate it under the following criteria:
+\begin{enumerate}
+ \item the ability of the user-interface to be understandable without a manual;
+ \item the way how buttons in the user-interface are positioned;
+ \item the animations embedded into the user-interface
+ \item the responsiveness of the system; and
+ \item the additional features of the system.
+\end{enumerate}
 
 % % REFERENCES FORMAT
 % % References must be the same font size as other body text.
