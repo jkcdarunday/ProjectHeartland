@@ -253,6 +253,73 @@ These studies show a history of Online Registration Systems used in UPLB. It can
 the papers and articles cited that the use of the best and fastest technology has not really been
 given consideration.
 
+\section{Methodology}
+
+\subsection{Database}
+
+The system will utilized three database systems. These database systems are as
+follows:
+\begin{enumerate}
+\item High-Speed Read and Write Storage System - This will be shared across all
+clusters. This needs to high speed because it will used to store information
+that change very fast and is read repeatedly such as the number of slots for
+every subject.
+
+\item High-Speed Read and Medium-Speed Write Relational Database System - Also 
+shared across all clusters, this will contain data and information that are not
+changed often but are read a repeatedly a lot such as the information for subjects
+and their dependencies, user accounts, and recommended courses.
+
+\item Persistent Relational Database System - This will be used as the permanent
+storage for all data. The other two storage and database systems will synchronize
+to this database at specific intervals.
+\end{enumerate}
+
+
+
+\subsection{Backend}
+
+The backend will be a server that serves a Representational State Transfer (REST)
+Application Programming Interface (API) through the Hypertext Transfer Protocol
+(HTTP). The system's backend shall have multithreading support. A thread will be 
+spawned for every successful HTTP connection. This thread will handle its own
+associated connection and wait for a command before processing it and giving a 
+reply. If a command is not received or completed after a specified amount of
+time, a timeout will occur and the connection will be dropped along with its
+corresponding thread being deallocated from the memory. 
+
+\subsubsection{Conflict Checking}
+
+Every time a modification or addition is done on a student's schedule, the 
+backend will check for conflicts before executing the specified action. 
+To do this, a bitwise AND will be done on the current user's schedule and the
+schedule of the subject to be inserted. If the resulting value is not 0 then
+an error reply will be sent.
+
+\subsubsection{Cross-Site HTTP Requests}
+
+The system will be designed to support HTTP Requests from specific domains
+where the frontend code will be stored. This is to be able to outsource the load
+added by frontend data being served as it will take a significant amount of
+networking bandwidth to serve the images and scripts included. This will also
+allow the frontend to have heavier images and scripts without affecting the 
+performance of the main server.
+
+
+\subsection{Frontend}
+
+The frontend will be a static web application that fires REST requests to the
+server. The Javascript Object Notation (JSON) will be used to specify parameters
+for commands that require sending non-anonymous data while a normal GET request
+can be used for reading data. The frontend will also have an enlistment queue
+where the user can setup which subjects he/she would like to enlist and then
+send them as a batch to the server. This would lessen the number of connections
+that the server will receive lessening the number of threads running in the 
+backend.
+
+
+
+
 % % REFERENCES FORMAT
 % % References must be the same font size as other body text.
 % \bibliographystyle{sigchi}
