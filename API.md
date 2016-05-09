@@ -3,7 +3,7 @@
 ## /student
 Contains functions that are related to the student profile and schedule.
 
-* ### /student/profile
+### /student/profile
   Returns student profile information in the structure:
 ```
 {
@@ -21,7 +21,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-* ### /student/schedule
+### /student/schedule
   Returns the current schedule of the student in the structure:
 ```
 {
@@ -32,7 +32,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-* ### /student/enlist
+### /student/enlist
   Enlists student to a section:
 ```
 {
@@ -40,7 +40,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-* ### /student/waitlist
+### /student/waitlist
   Waitlists student to a section:
 ```
 {
@@ -48,7 +48,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-* ### /student/cancel
+### /student/cancel
   Removes student from a section:
 ```
 {
@@ -56,7 +56,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-* ### /student/finalize
+### /student/finalize
   Finalizes the schedule of a student:
 ```
 {
@@ -68,7 +68,7 @@ Contains functions that are related to the student profile and schedule.
 ## /auth
 Contains functions that manages the session.
 
-* ### /auth/login
+### /auth/login
   Tries to authenticate with given credentials and returns session key
 ```
 {
@@ -77,7 +77,7 @@ Contains functions that manages the session.
 }
 ```
 
-* ### /auth/logout
+### /auth/logout
   Terminates session of given session key
 ```
 {
@@ -88,7 +88,7 @@ Contains functions that manages the session.
 ## /subjects
 Contains functions that returns data from the list of sections
 
-* ### /subjects/[subject]
+### /subjects/[subject]
   Returns list of sections of a subject
 ```
 {
