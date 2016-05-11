@@ -1,6 +1,9 @@
 [package]
-name = "Server"
+name = "heartland-server"
 version = "0.1.0"
 authors = ["Jan Keith Darunday <jkcdarunday@gmail.com>"]
 
 [dependencies]
+iron="*"
+router="*"
+mount="*"
