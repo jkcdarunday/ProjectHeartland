@@ -7,3 +7,8 @@ authors = ["Jan Keith Darunday <jkcdarunday@gmail.com>"]
 iron="*"
 router="*"
 mount="*"
+persistent="*"
+
+redis="*"
+r2d2="0.6"
+r2d2_redis="*"
