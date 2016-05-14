@@ -21,5 +21,5 @@ if not slot then
 end
 
 -- Give slot to student
-redis.call('hset', student_schedule_key, subject, section)
+redis.call('hset', student_schedule_key .. ':slots', subject, section)
 return 0

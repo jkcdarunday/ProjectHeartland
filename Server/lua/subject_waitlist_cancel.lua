@@ -10,10 +10,10 @@ local student_schedule_key = 'students:' .. student .. ':schedule'
 local subject_section_subkey = subject .. ':' .. section
 local subject_section_key = 'subjects:' .. subject_section_subkey
 
-if not (redis.call('hexists', student_schedule_key, subject) > 0) then
-    return -1 -- subject is not enlisted
+if not (redis.call('sismember', subject_section_key .. ':waitlisters', student) > 0) then
+    return -1 -- subject is not waitlisted
 end
 
-redis.call('hdel',  student_schedule_key, subject) -- remove from schedule
-redis.call('rpush', subject_section_key .. ':slots', subject_section_subkey) -- add back to slots
+redis.call('srem', subject_section_key .. ':waitlisters', student) -- remove from waitlisters
+redis.call('lrem', subject_section_key .. ':waitlist', 0, student) -- remove from waitlist
 return 0

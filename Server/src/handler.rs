@@ -13,7 +13,7 @@ use database::RedisPool;
 use scripts::Scripts;
 
 // TODO:
-// Waitlist
+// Waitlist +
 // Authentication (Sessions)
 // Roles
 // TODO_AFTER:
@@ -32,7 +32,7 @@ impl Enlisted{
 
         let result: HashMap<String, String> = scripts["student_schedule"].arg("2012-10053").invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{:?}", result))))
+        Ok(Response::with((status::Ok, format!("{{ result:0, data:{:?} }}", result))))
     }
 
     pub fn put(req: &mut Request) -> IronResult<Response> {
@@ -41,7 +41,7 @@ impl Enlisted{
 
         let result: i32 = scripts["student_schedule_enlist"].arg("2012-10053").arg("cmsc161").arg("uv-2l").invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{}", result))))
+        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
 
     pub fn del(req: &mut Request) -> IronResult<Response> {
@@ -50,7 +50,7 @@ impl Enlisted{
 
         let result: i32 = scripts["student_schedule_cancel"].arg("2012-10053").arg("cmsc161").arg("uv-2l").invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{}", result))))
+        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
 }
 
