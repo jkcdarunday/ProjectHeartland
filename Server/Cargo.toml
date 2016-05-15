@@ -9,6 +9,11 @@ router="*"
 mount="*"
 persistent="*"
 
+uuid = { version = "0.2", features = ["v4"] }
+rust-crypto = "^0.2"
+
+hyper="^0.9"
+
 redis="*"
 r2d2="0.6"
 r2d2_redis="*"

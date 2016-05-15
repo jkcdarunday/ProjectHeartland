@@ -13,6 +13,10 @@ extern crate redis;
 // extern crate r2d2_mysql
 // extern crate mysql_simple
 
+// Auth crates
+extern crate uuid;
+extern crate crypto;
+
 // Iron dependencies
 use mount::Mount;
 
@@ -38,18 +42,19 @@ use scripts::Scripts;
 
 fn main(){
     let student_router = router!(
-        get "/schedule" => handler::Enlisted::get,
-        put "/schedule" => handler::Enlisted::put,
-        delete "/schedule" => handler::Enlisted::del,
+        get ":student_number/schedule" => handler::Enlisted::get,
+        put ":student_number/schedule/:subject/:section" => handler::Enlisted::put,
+        delete ":student_number/schedule/:subject/:section" => handler::Enlisted::del,
 
-        get "/waitlist" => handler::Waitlist::get,
-        put "/waitlist" => handler::Waitlist::put,
-        delete "/waitlist" => handler::Waitlist::del
+        get ":student_number/waitlist/:subject/:section" => handler::Waitlist::get,
+        put ":student_number/waitlist/:subject/:section" => handler::Waitlist::put,
+        delete ":student_number/waitlist/:subject/:section" => handler::Waitlist::del
     );
 
     let auth_router = router!(
-        post "/login" => handler::Auth::post,
-        delete "/logout/:sid" => handler::Auth::del,
+        post "login/:username/:password" => handler::Auth::post,
+        delete "logout/:sid" => handler::Auth::del,
+        put "register/:student_number/:username/:password" => handler::Auth::put
     );
 
     let subject_router = router!(
