@@ -25,9 +25,10 @@ impl Key for Scripts { type Value = HashMap<String, Script>; }
 pub fn get_scripts() -> HashMap<String, Script>{
     let mut scripts = HashMap::new();
     let filenames = vec![
-    "student_schedule", "student_schedule_enlist", "student_schedule_cancel",
-     "subject_slots", "subject_waitlist_enlist", "subject_waitlist_cancel", "subject_waitlist_count", "subject_waitlist_position",
-     "auth_login", "auth_logout", "auth_register"
+        "student_schedule", "student_schedule_enlist", "student_schedule_cancel",
+        "student_waitlist_enlist", "student_waitlist_cancel", "student_waitlist_position",
+        "subject_waitlist_count", "subject_slots",
+        "auth_login", "auth_logout", "auth_register"
      ];
 
     for file in filenames {
