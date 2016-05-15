@@ -1,0 +1,324 @@
+body,head{
+  padding:0px;
+  margin:0px;
+  font-family:"Open Sans Light", 'Ubuntu Light', Sans;
+  color:#ccc;
+  overflow:hidden;
+
+}
+
+@font-face{
+  font-family:'Open Sans Light';
+  src: url(OpenSans-Light.ttf);
+}
+
+.section{
+  height:100%;
+  width:100%;
+  transition:all .2s ease-in;
+  -moz-transition:all .2s ease-in;
+  -o-transition:all .2s ease-in;
+  -webkit-transition:all .2s ease-in;
+  z-index:1;
+}
+
+.loginInactive{
+  margin-left:-100%;
+  opacity:0.0;
+  z-index:-100;
+}
+
+#main{
+  position:absolute;
+  background-color:#27333c;
+}
+
+#main #leftMenu{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:250px;
+  height:100%;
+  background-color:#304044;
+  border-right:thin solid #203234;
+}
+
+#main #rightWindow{
+  padding: 0px 5px 0px 255px;
+  height:100%;
+}
+#main .leftBar{
+  width:250px;
+}
+
+#main #leftMenu{
+  box-shadow:8px 0px 6px -9px rgba(0,0,0,0.6);
+  z-index:10;
+  overflow:auto;
+}
+
+#main #leftMenu #userData{
+  width:230px;
+  background-color:rgba(255,255,255,0.05);
+  border-bottom:thin solid #445566;
+  padding:10px;
+}
+#main #leftMenu #userData #user{
+  width:230px;
+}
+
+#main #leftMenu #userData #user #iconContainer{
+  height:50px;
+  width:50px;
+  margin:0px;
+  padding:0px;
+  line-height:0px;
+}
+
+#main #leftMenu #userData #user #icon{
+  height:50px;
+  position:relative;
+  width:50px;
+  margin:0px;
+  padding:0px;
+  border-radius: 50px;
+}
+
+#main #leftMenu #userData #user #name{
+  padding-left:5px;
+  padding-bottom:6px;
+  width:150px;
+  text-overflow:ellipsis;
+}
+
+#main #leftMenu #userData #info{
+  font-size:80%;
+}
+
+#main #leftMenu #mainMenu{
+  -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.2) inset;
+  -moz-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.2) inset;
+  -o-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.2) inset;
+  box-shadow: 0 8px 6px -6px rgba(0,0,0,0.2) inset;
+  min-height:300px;
+}
+
+#main #leftMenu #mainMenu #menuItems{
+  list-style: disc outside none;
+  cursor:default;
+  margin:0;
+  padding:0;
+}
+
+#main #leftMenu #mainMenu #menuItems li{
+  position:relative;
+  height:25px;
+  background: none repeat scroll 0% 0% rgba(0,0,0,0.1);
+  padding:10px;
+  width:200px;
+  -moz-transition:all 0.4s;
+  -webkit-transition:all 0.4s;
+  -o-transition:all 0.4s;
+  transition:all 0.4s;
+}
+
+#main #leftMenu #mainMenu #menuItems li:hover{
+  width:230px;
+  text-shadow:0px 0px 5px #fff;
+}
+
+#main #leftMenu #mainMenu #menuItems .menuActive{
+  width:230px;
+  background: none repeat scroll 0% 0% rgba(0,0,0,0.2);
+  -moz-text-shadow:0px 0px 10px #fff;
+  -webkit-text-shadow:0px 0px 10px #fff;
+  -o-text-shadow:0px 0px 10px #fff;
+  text-shadow:0px 0px 10px #fff;
+}
+
+#main #leftMenu #mainMenu #menuItems .logOut:hover{
+  background: none repeat scroll 0% 0% rgba(100,0,0,0.2);
+}
+
+#main #leftMenu #mainMenu #logo{
+  position:absolute;
+  bottom:10px;
+  left:5px;
+  opacity:.9;
+  z-index:-1;
+}
+
+@keyframes grow{
+  from{max-height:0px;overflow:hidden}
+  to{max-height:100%;}
+}
+
+@-moz-keyframes grow{
+  from{max-height:0px;overflow:hidden}
+  to{max-height:100%;}
+}
+
+@-webkit-keyframes grow{
+  from{max-height:0px;overflow:hidden}
+  to{max-height:100%;}
+}
+
+@-o-keyframes grow{
+  from{max-height:0px;overflow:hidden}
+  to{max-height:100%;}
+}
+
+.newsArticle{
+  overflow:hidden;
+  color:#111;
+  padding:10px;
+  background-color:#eee;
+  margin:10px;
+  box-shadow:0px 10px 10px -10px #122;
+}
+
+.newsFooter{
+  font-size:80%;
+  font-style:italic;
+}
+
+.newsHeader{
+  color:#444;
+  font-size:120%;
+  font-weight:bold;
+}
+
+#login{
+  position:absolute;
+  background-image: url('./images/uplb-pegaraw-blur.jpg');
+  background-size: cover;
+  box-shadow:10px 0px 10px -10px #000;
+  z-index:1000;
+}
+
+#login #mainform{
+  position:absolute;
+  width:400px;
+  padding:30px;
+  background-color:rgba(255,255,255,0.7);
+  border: thin solid rgba(255,255,255,0.4);
+  text-align:center;
+  height:280px;
+  top:50%;
+  left:50%;
+  margin-top:-170px;
+  margin-left:-230px;
+  box-shadow:0px 0px 10px rgba(0,0,0,0.9);
+}
+
+#login #mainform img {
+  margin-bottom:20px;
+}
+
+#login #mainform input {
+  border:0px solid #fff;
+  margin:2px;
+  height:40px;
+  box-shadow:0px 0px 5px rgba(0,0,0,0.2) inset;
+  font-family:"Open Sans Light";
+  font-size:12pt;
+  color:#222;
+}
+
+#login #mainform input[type=text], #login #mainform input[type=password]{
+  width:300px;
+  padding:10px;
+}
+
+#login #mainform input[type=submit]{
+  width:320px;
+  height:60px;
+  background-color:#4a4;
+}
+#login #mainform input[type=submit]:hover{
+  background-color:#4c4;
+}
+
+#main{
+  z-index:10;
+}
+
+@keyframes fromLeft{from{opacity:0.0;transform:translateX(-120%);}to{opacity:1.0;transform:translateX(0%);}}
+@keyframes fromRight{from{opacity:0.0;transform:translateX(120%);}to{opacity:1.0;transform:translateX(0%);}}
+@keyframes toLeft{to{opacity:0.0;transform:translateX(-120%);}from{opacity:1.0;transform:translateX(0%);}}
+@keyframes toRight{to{opacity:0.0;transform:translateX(120%);}from{opacity:1.0;transform:translateX(0%);}}
+
+@-webkit-keyframes fromLeft{from{opacity:0.0;-webkit-transform:translateX(-120%);}to{opacity:1.0;-webkit-transform:translateX(0%);}}
+@-webkit-keyframes fromRight{from{opacity:0.0;-webkit-transform:translateX(120%);}to{opacity:1.0;-webkit-transform:translateX(0%);}}
+@-webkit-keyframes toLeft{to{opacity:0.0;-webkit-transform:translateX(-120%);}from{opacity:1.0;-webkit-transform:translateX(0%);}}
+@-webkit-keyframes toRight{to{opacity:0.0;-webkit-transform:translateX(120%);}from{opacity:1.0;-webkit-transform:translateX(0%);}}
+
+@-moz-keyframes fromLeft{from{opacity:0.0;-moz-transform:translateX(-120%);}to{opacity:1.0;-moz-transform:translateX(0%);}}
+@-moz-keyframes fromRight{from{opacity:0.0;-moz-transform:translateX(120%);}to{opacity:1.0;-moz-transform:translateX(0%);}}
+@-moz-keyframes toLeft{to{opacity:0.0;-moz-transform:translateX(-120%);}from{opacity:1.0;-moz-transform:translateX(0%);}}
+@-moz-keyframes toRight{to{opacity:0.0;-moz-transform:translateX(120%);}from{opacity:1.0;-moz-transform:translateX(0%);}}
+
+.rightSection{
+  overflow:auto;
+  position:absolute;
+  color:333;
+  height:100%;
+  opacity:0.0;opacity:0.0;
+}
+
+.rightSection[active="true"]{
+  z-index:5;
+  opacity:1.0;
+}
+
+.rightSection.enterFromLeft{
+  animation:fromLeft 0.25s ease 0s 1 normal !important;
+  -moz-animation:fromLeft 0.25s ease 0s 1 normal !important;
+  -webkit-animation:fromLeft 0.25s ease 0s 1 normal !important;
+  transform:translateX(0%);
+  z-index:3;
+}
+
+.rightSection.enterFromRight{
+  animation:fromRight 0.25s ease 0s 1 normal !important;
+  -moz-animation:fromRight 0.25s ease 0s 1 normal !important;
+  -webkit-animation:fromRight 0.25s ease 0s 1 normal !important;
+  transform:translateX(0%);
+  z-index:3;
+}
+
+.rightSection.exitToLeft{
+  animation:toLeft 0.25s ease 0s 1 normal !important;
+  -moz-animation:toLeft 0.25s ease 0s 1 normal !important;
+  -webkit-animation:toLeft 0.25s ease 0s 1 normal !important;
+  transform:translateX(-120%);
+  z-index:2;
+}
+
+.rightSection.exitToRight{
+  animation:toRight 0.25s ease 0s 1 normal !important;
+  -moz-animation:toRight 0.25s ease 0s 1 normal !important;
+  -webkit-animation:toRight 0.25s ease 0s 1 normal !important;
+  transform:translateX(120%);
+  z-index:2;
+}
+
+
+@keyframes key{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@-webkit-keyframes key{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@-moz-keyframes key{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@-o-keyframes key{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+.loading{
+  margin:10px;
+  height:40px;
+  width:40px;
+  border-radius:40px;
+  border-width:0px 0px 2px 2px;
+  border-style:solid;
+  border-color:white;
+  animation:key 1s infinite normal linear;
+  -webkit-animation:key 1s infinite normal linear;
+  -moz-animation:key 1s infinite normal linear;
+  -o-animation:key 1s infinite normal linear;
+}
