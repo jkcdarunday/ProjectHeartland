@@ -9,6 +9,8 @@ use iron::prelude::*;
 use iron::status;
 use router::Router;
 
+use urlencoded::UrlEncodedQuery;
+
 use persistent::Read;
 
 use database::RedisPool;
@@ -35,11 +37,15 @@ impl Enlisted{
     pub fn get(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
-        let router = req.extensions.get::<Router>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
 
-        let session = router.find("session").unwrap();
 
-        let result: HashMap<String, String> = scripts["student_schedule"].arg(session).invoke(redis_connection).unwrap();
+        let session = query.get("sess_id").unwrap().get(0).unwrap();
+
+        let result: HashMap<String, String> = scripts["student_schedule"].arg(session.clone()).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:0, data:{:?} }}", result))))
     }
@@ -47,9 +53,13 @@ impl Enlisted{
     pub fn put(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let session = router.find("session").unwrap();
+        let session = query.get("sess_id").unwrap().get(0).unwrap().clone();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
@@ -61,9 +71,13 @@ impl Enlisted{
     pub fn del(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let session = router.find("session").unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
@@ -78,9 +92,13 @@ impl Waitlist{
     pub fn get(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let session = router.find("session").unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
@@ -92,9 +110,13 @@ impl Waitlist{
     pub fn put(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let session = router.find("session").unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
@@ -106,9 +128,13 @@ impl Waitlist{
     pub fn del(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let session = router.find("session").unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
@@ -123,11 +149,15 @@ impl Auth{
     pub fn post(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
-        let router = req.extensions.get::<Router>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+        //let router = req.extensions.get::<Router>().unwrap();
 
-        let username = router.find("username").unwrap();
+        let username = query.get("username").unwrap().get(0).unwrap().clone();
         let password = {
-            let password = router.find("password").unwrap();
+            let password = query.get("password").unwrap().get(0).unwrap();
             let mut blake = Blake2b::new(32);
             blake.input_str(&password);
             blake.result_str()
@@ -145,11 +175,15 @@ impl Auth{
     pub fn put(req: &mut Request) -> IronResult<Response> {
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
         let router = req.extensions.get::<Router>().unwrap();
 
-        let username = router.find("username").unwrap();
+        let username = query.get("username").unwrap().get(0).unwrap().clone();
         let password = {
-            let password = router.find("password").unwrap();
+            let password = query.get("password").unwrap().get(0).unwrap();
             let mut blake = Blake2b::new(32);
             blake.input_str(&password);
             blake.result_str()

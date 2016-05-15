@@ -2,6 +2,7 @@
 extern crate iron;
 extern crate mount;
 extern crate persistent;
+extern crate urlencoded;
 
 #[macro_use]
 extern crate router;
@@ -42,19 +43,19 @@ use scripts::Scripts;
 
 fn main(){
     let student_router = router!(
-        get ":session/schedule" => handler::Enlisted::get,
-        put ":session/schedule/:subject/:section" => handler::Enlisted::put,
-        delete ":session/schedule/:subject/:section" => handler::Enlisted::del,
+        get "/schedule" => handler::Enlisted::get,
+        put "/schedule/:subject/:section" => handler::Enlisted::put,
+        delete "/schedule/:subject/:section" => handler::Enlisted::del,
 
-        get ":session/waitlist/:subject/:section" => handler::Waitlist::get,
-        put ":session/waitlist/:subject/:section" => handler::Waitlist::put,
-        delete ":session/waitlist/:subject/:section" => handler::Waitlist::del
+        get "/waitlist/:subject/:section" => handler::Waitlist::get,
+        put "/waitlist/:subject/:section" => handler::Waitlist::put,
+        delete "/waitlist/:subject/:section" => handler::Waitlist::del
     );
 
     let auth_router = router!(
-        post "login/:username/:password" => handler::Auth::post,
-        delete "logout/:sid" => handler::Auth::del,
-        put "register/:student_number/:username/:password" => handler::Auth::put
+        post "login/" => handler::Auth::post,
+        delete "logout/" => handler::Auth::del,
+        put "register/:student_number" => handler::Auth::put
     );
 
     let subject_router = router!(
