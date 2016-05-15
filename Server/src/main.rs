@@ -42,13 +42,13 @@ use scripts::Scripts;
 
 fn main(){
     let student_router = router!(
-        get ":student_number/schedule" => handler::Enlisted::get,
-        put ":student_number/schedule/:subject/:section" => handler::Enlisted::put,
-        delete ":student_number/schedule/:subject/:section" => handler::Enlisted::del,
+        get ":session/schedule" => handler::Enlisted::get,
+        put ":session/schedule/:subject/:section" => handler::Enlisted::put,
+        delete ":session/schedule/:subject/:section" => handler::Enlisted::del,
 
-        get ":student_number/waitlist/:subject/:section" => handler::Waitlist::get,
-        put ":student_number/waitlist/:subject/:section" => handler::Waitlist::put,
-        delete ":student_number/waitlist/:subject/:section" => handler::Waitlist::del
+        get ":session/waitlist/:subject/:section" => handler::Waitlist::get,
+        put ":session/waitlist/:subject/:section" => handler::Waitlist::put,
+        delete ":session/waitlist/:subject/:section" => handler::Waitlist::del
     );
 
     let auth_router = router!(

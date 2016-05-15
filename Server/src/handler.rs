@@ -37,9 +37,9 @@ impl Enlisted{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
 
-        let result: HashMap<String, String> = scripts["student_schedule"].arg(snum).invoke(redis_connection).unwrap();
+        let result: HashMap<String, String> = scripts["student_schedule"].arg(session).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:0, data:{:?} }}", result))))
     }
@@ -49,11 +49,11 @@ impl Enlisted{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
-        let result: i32 = scripts["student_schedule_enlist"].arg(snum).arg(subject).arg(section).invoke(redis_connection).unwrap();
+        let result: i32 = scripts["student_schedule_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
@@ -63,11 +63,11 @@ impl Enlisted{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
-        let result: i32 = scripts["student_schedule_cancel"].arg(snum).arg(subject).arg(section).invoke(redis_connection).unwrap();
+        let result: i32 = scripts["student_schedule_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
@@ -80,11 +80,11 @@ impl Waitlist{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
-        let result: i32 = scripts["student_waitlist_position"].arg(snum).arg(subject).arg(section).invoke(redis_connection).unwrap();
+        let result: i32 = scripts["student_waitlist_position"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
@@ -94,11 +94,11 @@ impl Waitlist{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
-        let result: i32 = scripts["student_waitlist_enlist"].arg(snum).arg(subject).arg(section).invoke(redis_connection).unwrap();
+        let result: i32 = scripts["student_waitlist_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
@@ -108,11 +108,11 @@ impl Waitlist{
         let scripts = req.get::<Read<Scripts>>().unwrap();
         let router = req.extensions.get::<Router>().unwrap();
 
-        let snum = router.find("student_number").unwrap();
+        let session = router.find("session").unwrap();
         let subject = router.find("subject").unwrap();
         let section = router.find("section").unwrap();
 
-        let result: i32 = scripts["student_waitlist_cancel"].arg(snum).arg(subject).arg(section).invoke(redis_connection).unwrap();
+        let result: i32 = scripts["student_waitlist_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
     }
@@ -155,7 +155,7 @@ impl Auth{
             blake.result_str()
         };
         let number = router.find("student_number").unwrap();
-        println!("{} {} {} {}", username, password, "0", number);
+
         let result: i32 = scripts["auth_register"].arg(username).arg(password).arg("0").arg(number).invoke(redis_connection).unwrap();
         Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
 

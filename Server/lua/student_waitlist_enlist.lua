@@ -3,11 +3,19 @@
 -- ARGV[3] = section
 
 -- Declare variables
-local student = ARGV[1]
+local session = 'sessions:' .. ARGV[1]
 local subject = ARGV[2]
 local section = ARGV[3]
-local student_schedule_key = 'students:' .. student .. ':schedule'
 local subject_section_key = 'subjects:' .. subject .. ':' .. section
+
+-- Get student number from session key
+local role = redis.call('hget', session, 'role')
+if not role == 0 then
+  return -9
+end
+local student = redis.call('hget', session, 'number');
+
+local student_schedule_key = 'students:' .. student .. ':schedule'
 
 -- Check if subject is already enrolled
 if redis.call('hexists',  student_schedule_key, subject) > 0 then
