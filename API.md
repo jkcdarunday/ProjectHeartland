@@ -21,7 +21,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### GET /student/schedule?session=?
+### GET /student/schedule?session=[SID11]
   Returns the current schedule of the student in the structure:
 ```
 {
@@ -32,7 +32,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### PUT /student/schedule/[SUBJECT]/[SECTION]?session=?
+### PUT /student/schedule?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Enlists student to a section:
 ```
 {
@@ -40,7 +40,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### DELETE /student/schedule/[SUBJECT]/[SECTION]?session=?
+### DELETE /student/schedule/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Removes student from a section:
 ```
 {
@@ -48,7 +48,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### GET /student/waitlist/[SUBJECT]/[SECTION]?session=?
+### GET /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Returns the position of a student in the waitlist:
 ```
 {
@@ -56,7 +56,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### PUT /student/waitlist/[SUBJECT]/[SECTION]?session=?
+### PUT /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Waitlists student to a section:
 ```
 {
@@ -64,7 +64,7 @@ Contains functions that are related to the student profile and schedule.
 }
 ```
 
-### DELETE /student/waitlist/[SUBJECT]/[SECTION]?session=?
+### DELETE /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Removes a student from the waitlist of a section:
 ```
 {
@@ -105,6 +105,14 @@ Contains functions that manages the session.
 Contains functions that deal with subjects
 
 ### GET /subjects/[SUBJECT]/[SECTION] (TODO)
+  Returns the number of slots left for a given section:
+```
+{
+	result:4,
+}
+```
+
+### GET /subjects/create?session=[SID]&subject=[SUBJECT]&section=[SECTION]&max_slots=10&{lecture=A}
   Returns the number of slots left for a given section:
 ```
 {
