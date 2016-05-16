@@ -12,7 +12,7 @@ function UserInterface(root) {
 UserInterface.prototype.login = function(user) {
   $_ID('login').className += ' loginInactive';
   $_ID('name').innerHTML = user.name
-  $_ID('lastLogin').innerHTML = user.lastLogin;
+    // $_ID('lastLogin').innerHTML = user.lastLogin;
   $_ID('units').innerHTML = user.units;
   $_ID('icon').src = user.icon;
 }

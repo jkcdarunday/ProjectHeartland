@@ -10,7 +10,7 @@ function HeartLand(mainui) {
   var classes = $_CLASS('menuChoice');
   for (var i = 0; i < classes.length; i++) {
     classes[i].onclick = function() {
-      $.updateSection(this, this.id);
+      // $.updateSection(this, this.id);
     }
   }
 
@@ -21,7 +21,7 @@ function HeartLand(mainui) {
       $_ID('login').style.display = 'block';
     }, 300);
     this.ui.login(JSON.parse(user));
-    this.updateSection($_ID('home'), 'home');
+    // this.updateSection($_ID('home'), 'home');
   }
 
   window.addEventListener('storage', function(e) {
@@ -31,45 +31,55 @@ function HeartLand(mainui) {
       } else {
         var user = cookie.get('user');
         $.ui.login(JSON.parse(user));
-        $.updateSection($_ID('home'), 'home');
+        // $.updateSection($_ID('home'), 'home');
       }
     }
   }, false);
 }
 
-HeartLand.prototype.getUser = function() {
-  return this.user;
-}
-
 HeartLand.prototype.login = function(username, password) {
   var $ = this;
-
-  this.ajax.post('process.php?p=login', 'user=' + username + '&password=' + password, function(r) {
+  var url = config.server_url + '/auth/login';
+  var params = '?username=' + username + '&password=' + password;
+  this.ajax.request('post', url + params, function(r) {
     var res;
 
     try {
+      console.log(r)
       res = JSON.parse(r);
+      console.log(res)
     } catch (e) {
       alert('The server has responded with invalid data.');
     }
 
-    if (res.user) {
-      $.user = res.user;
-      $.ui.login($.user);
-      cookie.set('user', JSON.stringify($.user));
-      cookie.set('sessionID', JSON.stringify($.user.sessionID));
-      localStorage.loggedin = 'true';
-      $.updateSection($_ID('home'), 'home');
-    } else {
-      return alert(res.message);
+    switch (res.result) {
+      case 0:
+        $.user = {
+          'name': username,
+          'units': 18,
+          'icon': './images/account-circle-icon.png'
+        };
+        $.ui.login($.user);
+        cookie.set('user', JSON.stringify($.user));
+        cookie.set('sessionID', res.key);
+        localStorage.loggedin = 'true';
+        break;
+      case -1: // wrong password
+        return alert('Error: Incorrect password.');
+        break;
+      case -2: // user does not exist
+        return alert('Error: User does not exist.');
+        break;
     }
   });
 }
 
 HeartLand.prototype.logout = function() {
   var $ = this;
+  var url = config.server_url + '/auth/logout';
+  var params = '?session=' + cookie.get('sessionID');
 
-  this.ajax.post("process.php?p=logout", 'sessid=' + this.sessionID, function(r) {
+  this.ajax.request('delete', url + params, function(r) {
     $.user = null;
     cookie.remove('user');
     cookie.remove('sessionID');
@@ -83,7 +93,7 @@ HeartLand.prototype.updateSection = function(elt, section) {
 
   this.ui.setLoading(section + 'Section');
 
-  $.ajax.get("process.php?p=" + section, function(r) {
+  $.ajax.request('get', config.server_url, function(r) {
     var res;
     try {
       res = JSON.parse(r);
