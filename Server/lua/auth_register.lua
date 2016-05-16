@@ -8,7 +8,7 @@ local password = ARGV[2]
 local role = ARGV[3]
 local number = ARGV[4]
 
-local user_key = 'user:' .. username
+local user_key = 'users:' .. username
 
 if redis.call('exists', user_key .. ':number') > 0 then
   return -1 -- user already exists

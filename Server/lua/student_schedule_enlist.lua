@@ -23,11 +23,11 @@ if redis.call('hexists',  student_schedule_key, subject) > 0 then
 end
 
 -- Try to get a slot
-local slot = redis.call('lpop', subject_section_key)
+local slot = redis.call('lpop', subject_section_key .. ':slots')
 if not slot then
     return -2
 end
 
 -- Give slot to student
-redis.call('hset', student_schedule_key .. ':slots', subject, section)
+redis.call('hset', student_schedule_key, subject, section)
 return 0

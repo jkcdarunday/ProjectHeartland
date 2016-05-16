@@ -7,7 +7,7 @@ local username = ARGV[1]
 local password = ARGV[2]
 local session_id = ARGV[3]
 
-local user_key = 'user:' .. username
+local user_key = 'users:' .. username
 
 if redis.call('exists', user_key .. ':password') == 0 then
   return -2 -- user does not exist

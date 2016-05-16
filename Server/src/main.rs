@@ -55,12 +55,12 @@ impl AfterMiddleware for CrossOrigin {
 fn main(){
     let student_router = router!(
         get "/schedule" => handler::Enlisted::get,
-        put "/schedule/:subject/:section" => handler::Enlisted::put,
-        delete "/schedule/:subject/:section" => handler::Enlisted::del,
+        put "/schedule" => handler::Enlisted::put,
+        delete "/schedule" => handler::Enlisted::del,
 
-        get "/waitlist/:subject/:section" => handler::Waitlist::get,
-        put "/waitlist/:subject/:section" => handler::Waitlist::put,
-        delete "/waitlist/:subject/:section" => handler::Waitlist::del
+        get "/waitlist" => handler::Waitlist::get,
+        put "/waitlist" => handler::Waitlist::put,
+        delete "/waitlist" => handler::Waitlist::del
     );
 
     let auth_router = router!(
@@ -70,7 +70,8 @@ fn main(){
     );
 
     let subject_router = router!(
-        get "/:subject" => handler::Subject::get
+        get "/:subject" => handler::Subject::get,
+        put "/create" => handler::Subject::put
     );
 
     println!("Connecting to database..");

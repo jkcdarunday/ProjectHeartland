@@ -43,7 +43,7 @@ impl Enlisted{
         };
 
 
-        let session = query.get("sess_id").unwrap().get(0).unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap();
 
         let result: HashMap<String, String> = scripts["student_schedule"].arg(session.clone()).invoke(redis_connection).unwrap();
 
@@ -57,11 +57,10 @@ impl Enlisted{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-        let router = req.extensions.get::<Router>().unwrap();
 
-        let session = query.get("sess_id").unwrap().get(0).unwrap().clone();
-        let subject = router.find("subject").unwrap();
-        let section = router.find("section").unwrap();
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
 
         let result: i32 = scripts["student_schedule_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
@@ -75,11 +74,10 @@ impl Enlisted{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-        let router = req.extensions.get::<Router>().unwrap();
 
         let session = query.get("session").unwrap().get(0).unwrap().clone();
-        let subject = router.find("subject").unwrap();
-        let section = router.find("section").unwrap();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
 
         let result: i32 = scripts["student_schedule_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
@@ -96,11 +94,10 @@ impl Waitlist{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-        let router = req.extensions.get::<Router>().unwrap();
 
         let session = query.get("session").unwrap().get(0).unwrap().clone();
-        let subject = router.find("subject").unwrap();
-        let section = router.find("section").unwrap();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
 
         let result: i32 = scripts["student_waitlist_position"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
@@ -114,11 +111,10 @@ impl Waitlist{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-        let router = req.extensions.get::<Router>().unwrap();
 
         let session = query.get("session").unwrap().get(0).unwrap().clone();
-        let subject = router.find("subject").unwrap();
-        let section = router.find("section").unwrap();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
 
         let result: i32 = scripts["student_waitlist_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
@@ -132,11 +128,10 @@ impl Waitlist{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-        let router = req.extensions.get::<Router>().unwrap();
 
         let session = query.get("session").unwrap().get(0).unwrap().clone();
-        let subject = router.find("subject").unwrap();
-        let section = router.find("section").unwrap();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
 
         let result: i32 = scripts["student_waitlist_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
@@ -217,6 +212,34 @@ impl Subject{
         let scripts = req.get::<Read<Scripts>>().unwrap();
 
         let result: HashMap<String, i32> = scripts["subject_slots"].arg("cmsc161").invoke(redis_connection).unwrap();
+
+        Ok(Response::with((status::Ok, format!("{:?}", result))))
+    }
+
+    pub fn put(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        //  subject section max_slots schedule_set lecture
+
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let section = query.get("section").unwrap().get(0).unwrap().clone();
+        let max_slots = query.get("max_slots").unwrap().get(0).unwrap().clone();
+        //let subject = query.get("session").unwrap().get(0).unwrap().clone();
+        let lecture = match query.get("lecture") {
+            Some(s) => s.get(0).unwrap().clone(),
+            None => "".to_string()
+        };
+
+        let result: i32 = scripts["admin_subject_add"]
+        .arg(session).arg(subject).arg(section).arg(max_slots).arg(lecture)
+        .invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{:?}", result))))
     }
