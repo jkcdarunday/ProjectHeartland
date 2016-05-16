@@ -47,7 +47,7 @@ impl Enlisted{
 
         let result: HashMap<String, String> = scripts["student_schedule"].arg(session.clone()).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ \"result\":0, data:{:?} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ \"result\":0, \"data\":{:?} }}", result))))
     }
 
     pub fn put(req: &mut Request) -> IronResult<Response> {
