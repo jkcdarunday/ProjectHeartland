@@ -192,11 +192,21 @@ impl Auth{
 
         let result: i32 = scripts["auth_register"].arg(username).arg(password).arg("0").arg(number).invoke(redis_connection).unwrap();
         Ok(Response::with((status::Ok, format!("{{ \"result\":{} }}", result))))
-
     }
 
-    pub fn del(_: &mut Request) -> IronResult<Response> {
-        Ok(Response::with((status::NotFound, "unimplemented")))
+    pub fn del(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
+
+        let result: i32 = scripts["auth_logout"].arg(session).invoke(redis_connection).unwrap();
+
+        Ok(Response::with((status::Ok, format!("{{ \"result\":{} }}", result))))
     }
 }
 
