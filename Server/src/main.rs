@@ -23,8 +23,10 @@ use mount::Mount;
 
 use persistent::Read;
 
-use iron::Iron;
-use iron::Chain;
+use iron::middleware::AfterMiddleware;
+use iron::prelude::*;
+use iron::headers::*;
+use iron::method::*;
 
 // Handler module
 mod handler;
@@ -40,6 +42,15 @@ use database::RedisPool;
 
 // Shared scripts
 use scripts::Scripts;
+
+struct CrossOrigin;
+impl AfterMiddleware for CrossOrigin {
+    fn after(&self, _: &mut Request, mut res: Response) -> IronResult<Response> {
+        res.headers.set(AccessControlAllowOrigin::Any);
+        res.headers.set(AccessControlAllowMethods(vec![Get, Put, Post, Delete]));
+        Ok(res)
+    }
+}
 
 fn main(){
     let student_router = router!(
@@ -78,6 +89,7 @@ fn main(){
     let mut chain = Chain::new(mount);
     chain.link(Read::<RedisPool>::both(redis_db));
     chain.link(Read::<Scripts>::both(shared_scripts));
+    chain.link_after(CrossOrigin);
 
     Iron::new(chain).listen_with("0.0.0.0:3000", 512, iron::Protocol::Http, None).unwrap();
     println!("Started listening.");
