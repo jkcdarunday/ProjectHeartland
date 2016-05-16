@@ -241,6 +241,6 @@ impl Subject{
         .arg(session).arg(subject).arg(section).arg(max_slots).arg(lecture)
         .invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{:?}", result))))
+        Ok(Response::with((status::Ok, format!("\"result\" :{:?}", result))))
     }
 }
