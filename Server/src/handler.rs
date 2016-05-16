@@ -47,7 +47,7 @@ impl Enlisted{
 
         let result: HashMap<String, String> = scripts["student_schedule"].arg(session.clone()).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:0, data:{:?} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':0, data:{:?} }}", result))))
     }
 
     pub fn put(req: &mut Request) -> IronResult<Response> {
@@ -65,7 +65,7 @@ impl Enlisted{
 
         let result: i32 = scripts["student_schedule_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
     }
 
     pub fn del(req: &mut Request) -> IronResult<Response> {
@@ -83,7 +83,7 @@ impl Enlisted{
 
         let result: i32 = scripts["student_schedule_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
     }
 }
 
@@ -104,7 +104,7 @@ impl Waitlist{
 
         let result: i32 = scripts["student_waitlist_position"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
     }
 
     pub fn put(req: &mut Request) -> IronResult<Response> {
@@ -122,7 +122,7 @@ impl Waitlist{
 
         let result: i32 = scripts["student_waitlist_enlist"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
     }
 
     pub fn del(req: &mut Request) -> IronResult<Response> {
@@ -140,7 +140,7 @@ impl Waitlist{
 
         let result: i32 = scripts["student_waitlist_cancel"].arg(session).arg(subject).arg(section).invoke(redis_connection).unwrap();
 
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
     }
 }
 
@@ -166,9 +166,9 @@ impl Auth{
 
         let result: i32 = scripts["auth_login"].arg(username).arg(password).arg(format!("{}",session_key.simple())).invoke(redis_connection).unwrap();
         if result != 0 {
-            Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+            Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
         } else {
-            Ok(Response::with((status::Ok, format!("{{ result:{}, key:\"{}\" }}", result, session_key.simple()))))
+            Ok(Response::with((status::Ok, format!("{{ 'result':{}, 'key':'{}' }}", result, session_key.simple()))))
         }
     }
 
@@ -191,7 +191,7 @@ impl Auth{
         let number = router.find("student_number").unwrap();
 
         let result: i32 = scripts["auth_register"].arg(username).arg(password).arg("0").arg(number).invoke(redis_connection).unwrap();
-        Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
+        Ok(Response::with((status::Ok, format!("{{ 'result':{} }}", result))))
 
     }
 
