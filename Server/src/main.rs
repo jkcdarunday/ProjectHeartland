@@ -53,8 +53,8 @@ fn main(){
     );
 
     let auth_router = router!(
-        post "login/" => handler::Auth::post,
-        delete "logout/" => handler::Auth::del,
+        post "login" => handler::Auth::post,
+        delete "logout" => handler::Auth::del,
         put "register/:student_number" => handler::Auth::put
     );
 
