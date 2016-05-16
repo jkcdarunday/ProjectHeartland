@@ -168,7 +168,7 @@ impl Auth{
         if result != 0 {
             Ok(Response::with((status::Ok, format!("{{ result:{} }}", result))))
         } else {
-            Ok(Response::with((status::Ok, format!("{{ result:{}, key:{} }}", result, session_key.simple()))))
+            Ok(Response::with((status::Ok, format!("{{ result:{}, key:\"{}\" }}", result, session_key.simple()))))
         }
     }
 
