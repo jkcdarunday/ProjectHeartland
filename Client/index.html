@@ -1,12 +1,145 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title></title>
-		link
-	</head>
-	<body>
-		body
-	</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>SystemOne Lite</title>
+        <link rel="stylesheet" href="main.css"/>
+        <link href='font.css' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="section" id="login">
+            <form id="mainform" method="POST">
+                <img src="logo.svg" />
+                <input id="uname" type="text" name="username" placeholder="Username or Student Number"/><br>
+                <input id="upass" type="password" name="password" placeholder="Password"/><br>
+                <input type="submit" value="Login"/>
+            </form>
+        </div>
+        <div class="section" id="main">
+            <div id="leftMenu">
+                <div class="leftBar" id="userData">
+                    <table id="user">
+                        <tr><td id="iconContainer"><img id="icon" alt="./images/account-circle-icon.png"/></td><td id="name"></td></tr>
+                    </table>
+                    <table id="info">
+                        <tr><td>Last Login</td><td id="lastLogin"></td></tr>
+                        <tr><td>Current Units</td><td id="units"></td></tr>
+                    </table>
+                </div>
+                <div class="leftBar" id="mainMenu">
+                    <ul id="menuItems">
+                        <li id="home" class="menuChoice menuActive">Home</li>
+                        <li id="checklist" class="menuChoice">Mini Checklist</li>
+                        <li id="enlistment" class="menuChoice">Enlistment</li>
+                        <li id="dreamsched" class="menuChoice">Dream Schedule</li>
+                        <li id="logout" class="logOut">Logout</li>
+                    </ul>
+                    <img id="logo" src="logo.svg"/>
+                </div>
+            </div>
+            <div id="rightWindow">
+                <section class="rightSection active" id="homeSection" index=1 active="true">
+                    <!-- <article class="newsArticle">
+                    <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+                    <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+                    <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+                    <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+                    <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+                    <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+                    </article>
+                    <article class="newsArticle">
+                    <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+                    <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+                    <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+                    <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+                    <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+                    <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+                    </article> -->
+                </section>
+                <section class="rightSection" id="checklistSection" index=2 active="false">
+                    <!-- <article class="newsArticle">
+                    <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+                    <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+                    <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+                    <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+                    <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+                    <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+                    </article> -->
+                </section>
+                <section class="rightSection" id="enlistmentSection" index=3 active="false">
+                    <!-- <article class="newsArticle">
+                    <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+                    <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+                    <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+                    <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+                    <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+                    <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+                    </article> -->
+                </section>
+                <section class="rightSection" id="dreamschedSection" index=4 active="false">
+                    <!-- <article class="newsArticle">
+                    <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+                    <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+                    <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+                    <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+                    <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+                    <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+                    </article> -->
+                </section>
+            </div>
+        </div>
+
+        <!-- scripts -->
+        <script src="scripts/config.js" charset="utf-8"></script>
+        <script src="scripts/cookie.js" charset="utf-8"></script>
+        <script src="scripts/core.js" charset="utf-8"></script>
+        <script src="scripts/ajax.js" charset="utf-8"></script>
+        <script src="scripts/heartland.js" charset="utf-8"></script>
+        <script src="scripts/ui.js" charset="utf-8"></script>
+        <script src="scripts/main.js" charset="utf-8"></script>
+    </body>
 </html>
+
+<template id="homeContent">
+  <article class="newsArticle">
+  <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+  <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+  <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+  <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+  <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+  <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+  </article>
+</template>
+
+<template id="enlistmentContent">
+  <article class="newsArticle">
+  <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+  <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+  <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+  <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+  <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+  <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+  </article>
+</template>
+
+<template id="checklistContent">
+  <article class="newsArticle">
+  <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+  <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+  <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+  <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+  <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+  <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+  </article>
+</template>
+
+<template id="dreamschedContent">
+  <article class="newsArticle">
+  <p>Bacon ipsum dolor sit amet shank jerky pastrami, filet mignon capicola tenderloin chuck biltong meatloaf. Tail strip steak beef t-bone corned beef, landjaeger biltong rump shankle tenderloin chuck doner. Brisket biltong bacon ribeye. Filet mignon salami landjaeger, pork sausage jowl pork belly. Cow tenderloin filet mignon salami shoulder. Tongue pork belly boudin corned beef swine, meatloaf salami prosciutto frankfurter beef ribs tenderloin pork loin leberkas t-bone.</p>
+  <p>Jowl filet mignon flank meatloaf, short loin tail pork loin salami ham hock. Filet mignon rump flank pancetta turducken tenderloin. Short loin rump ground round chuck, porchetta ham hock pork loin. Pancetta spare ribs chicken, meatball bresaola porchetta beef ribs meatloaf pig andouille short loin beef frankfurter shank brisket.</p>
+  <p>Ham hock strip steak sausage tenderloin shank biltong bacon. Doner leberkas shank bresaola kevin rump. Strip steak boudin t-bone ground round flank short ribs salami shankle leberkas filet mignon tail turducken shoulder pork pork belly. Ball tip sausage porchetta, sirloin fatback ham hock short loin ham pork loin pig.</o>
+  <p>Short loin ground round biltong flank pork belly. Boudin ground round pork loin pancetta turkey jowl beef ribs pastrami shank. Swine chuck pork belly pork tail landjaeger ball tip doner venison rump hamburger chicken. Ham hock frankfurter fatback, salami chicken jowl pork sirloin brisket flank filet mignon landjaeger kevin ribeye ham. Pancetta andouille kevin boudin salami tail biltong. Shoulder tail drumstick brisket pork chop pig sirloin ground round bresaola ham hock ham salami. Ground round pastrami tenderloin frankfurter.</p>
+  <p>Tri-tip shoulder kielbasa hamburger spare ribs flank prosciutto leberkas. Corned beef chuck sausage brisket ground round shank porchetta, biltong cow ham hock meatball. Tongue beef brisket, rump venison strip steak chicken meatball pork bacon doner spare ribs frankfurter corned beef. Ham leberkas fatback brisket, prosciutto strip steak filet mignon frankfurter capicola turducken flank shank ground round. Tongue turkey kevin meatball brisket, beef ribs hamburger fatback ground round cow sirloin pastrami.</p>
+  <footer class="newsFooter">- Rommel Bulalacao (Wed Feb  5 00:11:22 JST 2014)</footer>
+  </article>
+</template>
