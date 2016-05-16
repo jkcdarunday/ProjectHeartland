@@ -11,7 +11,7 @@ local subject_section_key = 'subjects:' .. subject .. ':' .. section
 -- Get student number from session key
 local role = redis.call('hget', session, 'role')
 if not role == 0 then
-  return -9
+  return -9 -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');
 
@@ -22,4 +22,4 @@ for i=1,#waitlist do
         return i - 1
     end
 end
-return -1
+return -1 -- student is not in waitlist

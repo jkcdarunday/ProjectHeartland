@@ -10,7 +10,7 @@ local session_id = ARGV[3]
 local user_key = 'user:' .. username
 
 if redis.call('exists', user_key .. ':password') == 0 then
-  return -2
+  return -2 -- user does not exist
 end
 
 local actual_password = redis.call('get', user_key .. ':password')
@@ -20,5 +20,5 @@ if(password == actual_password) then
   redis.call('hmset', 'sessions:' .. session_id, 'number', number, 'role', role)
   return 0
 else
-  return -1
+  return -1 -- incorrect password
 end
