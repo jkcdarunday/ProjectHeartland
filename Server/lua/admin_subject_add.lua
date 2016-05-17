@@ -4,7 +4,9 @@ local subject = ARGV[2]
 local section = ARGV[3]
 local max_slots = tonumber(ARGV[4])
 local schedule = ARGV[5]
-local lecture = ARGV[6]
+local units = tonumber(ARGV[6])
+local lecture = ARGV[7]
+local pure = tonumber(ARGV[8])
 
 local role = redis.call('hget', session, 'role')
 if not role == 9 then
@@ -18,7 +20,10 @@ if redis.call('exists', subject_section_key .. ':slots') > 0 then
   return -1 -- section already exists
 end
 
--- set impurity and lecture
+-- set impurity, units, and lecture
+if pure == 0 then
+  redis.call('set', subject_section_key .. ':impure', 1)
+end
 if string.len(lecture) > 0 then
   local lecture_section_key = 'subjects:' .. subject .. ':' .. lecture
   if redis.call('exists', lecture_section_key .. ':slots') <= 0 then
@@ -28,8 +33,14 @@ if string.len(lecture) > 0 then
   redis.call('set', subject_section_key .. ':lecture', lecture)
 end
 
-if max_slots <= 0 then
-  return -3 -- invaled max slots
+if max_slots < 0 then
+  return -3 -- invalid max slots
+end
+
+if units >= 0 then
+  redis.call('set', subject_section_key .. ':units', units)
+else
+  redis.call('set', subject_section_key .. ':units', 0)
 end
 
 -- write slots

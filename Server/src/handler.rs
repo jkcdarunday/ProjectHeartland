@@ -331,19 +331,26 @@ impl Admin{
         };
 
         //println!("{:?}", );
+
         let mut results = vec![];
         let subject_data = data.as_object().unwrap();
         for (subject, value) in subject_data.get("subjects").unwrap().as_object().unwrap().iter() {
             for (section, value) in value.as_object().unwrap().iter(){
                 let section_object = value.as_object().unwrap();
-                let slots = match section_object.get("slots").unwrap(){
-                    &Json::String(ref slots) => slots.clone(),
-                    _ => "0".to_string()
+                let slots = match section_object.get("slots") {
+                    Some(slots) => match slots {
+                        &Json::U64(ref slots) => slots.clone(),
+                        _ => 0
+                    },
+                    None => {println!("{} {:?}", subject, section_object); 0}
                 };
 
-                let schedule = match section_object.get("schedule_code").unwrap(){
-                    &Json::String(ref slots) => slots.clone(),
-                    _ => "|||||".to_string()
+                let schedule = match section_object.get("schedule_code") {
+                    Some(schedule) => match schedule {
+                        &Json::String(ref schedule) => schedule.clone(),
+                        _ => "|||||".to_string()
+                    },
+                    None => {println!("{:?}", section_object); "|||||".to_string()}
                 };
 
                 let lecture = match section_object.get("lecture") {
@@ -354,17 +361,44 @@ impl Admin{
                     None => "".to_string()
                 };
 
+                let units = match section_object.get("units") {
+                    Some(units) => match units {
+                        &Json::U64(ref units) => units.clone(),
+                        _ => 0
+                    },
+                    None => 0
+                };
+
+                let is_pure = match section_object.get("pure") {
+                    Some(is_pure) => match is_pure {
+                        &Json::U64(ref is_pure) => is_pure.clone(),
+                        _ => 1
+                    },
+                    None => 1
+                };
+
                 let result: i32 = scripts["admin_subject_add"]
-                .arg(session.clone()).arg(subject.clone()).arg(section.clone()).arg(slots).arg(schedule).arg(lecture)
+                .arg(session.clone())
+                .arg(subject.clone())
+                .arg(section.clone())
+                .arg(slots)
+                .arg(schedule)
+                .arg(units)
+                .arg(lecture)
+                .arg(is_pure)
                 .invoke(redis_connection).unwrap();
                 results.push(result);
             }
         }
 
-        Ok(Response::with((status::Ok, format!("\"results\" :{:?}", results))))
+        Ok(Response::with((status::Ok, format!("{{\"results\" :{:?}}}", results))))
     }
 
     pub fn import_students(_: &mut Request) -> IronResult<Response> {
+            Ok(Response::with((status::Ok, format!("\"result\" :0"))))
+    }
+
+    pub fn create_admin(_: &mut Request) -> IronResult<Response> {
             Ok(Response::with((status::Ok, format!("\"result\" :0"))))
     }
 }
