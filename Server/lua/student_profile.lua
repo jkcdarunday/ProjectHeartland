@@ -11,21 +11,21 @@ local student_key = 'students:' .. student
 
 local profile_map = {}
 
-section_map[0] = 'first_name'
-section_map[1] = redis.call('hget', student_key.. ':name', 'first')
-section_map[2] = 'middle_name'
-section_map[3] = redis.call('hget', student_key.. ':name', 'middle')
-section_map[4] = 'last_name'
-section_map[5] = redis.call('hget', student_key.. ':name', 'last')
-section_map[6] = 'student_number'
-section_map[7] = student
-section_map[8] = 'curriculum'
-section_map[9] = redis.call('get', student_key.. ':curriculum')
-section_map[10] = 'standing'
-section_map[11] = redis.call('get', student_key.. ':standing')
-section_map[12] = 'total_units'
-section_map[13] = redis.call('get', student_key.. ':total_units')
-section_map[14] = 'max_units'
-section_map[15] = redis.call('get', student_key.. ':max_units')
+profile_map[1] = 'first_name'
+profile_map[2] = tostring(redis.call('hget', student_key.. ':name', 'first') or '')
+profile_map[3] = 'middle_name'
+profile_map[4] = tostring(redis.call('hget', student_key.. ':name', 'middle') or '')
+profile_map[5] = 'last_name'
+profile_map[6] = tostring(redis.call('hget', student_key.. ':name', 'last') or '')
+profile_map[7] = 'student_number'
+profile_map[8] = tostring(student or '')
+profile_map[9] = 'curriculum'
+profile_map[10] = tostring(redis.call('get', student_key.. ':curriculum') or '')
+profile_map[11] = 'standing'
+profile_map[12] = tostring(redis.call('get', student_key.. ':standing') or '')
+profile_map[13] = 'total_units'
+profile_map[14] = tostring(redis.call('get', student_key.. ':total_units') or '')
+profile_map[15] = 'max_units'
+profile_map[16] = tostring(redis.call('get', student_key.. ':max_units') or '')
 
-return section_map
+return profile_map
