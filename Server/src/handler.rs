@@ -211,7 +211,15 @@ impl Subject{
         let redis_connection = &get_db_connection(req) as &redis::Connection;
         let scripts = req.get::<Read<Scripts>>().unwrap();
 
-        let result: HashMap<String, i32> = scripts["subject_slots"].arg("cmsc161").invoke(redis_connection).unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        let subject = query.get("subject").unwrap().get(0).unwrap().clone();
+        let sections = query.get("sections").unwrap().get(0).unwrap().clone();
+
+        let result: HashMap<String, i32> = scripts["subject_slots"].arg(subject).arg(sections).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{:?}", result))))
     }

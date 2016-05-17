@@ -7,16 +7,16 @@ Contains functions that are related to the student profile and schedule.
   Returns student profile information in the structure:
 ```
 {
-	result:0,
-    data:{
-    	first_name:,
-        middle_name:,
-        last_name:,
-        student_number:,
-        curriculum:,
-        standing:,
-        total_units:,
-        available_units:
+	"result":0,
+	"data":{
+		"first_name":,
+		"middle_name":,
+		"last_name":,
+		"student_number":,
+		"curriculum":,
+		"standing":,
+		"total_units":,
+		"available_units":
 	}
 }
 ```
@@ -25,9 +25,9 @@ Contains functions that are related to the student profile and schedule.
   Returns the current schedule of the student in the structure:
 ```
 {
-	result:0,
-  data:{
-  	schedule:{"CMSC 161":"UV-1", "CMSC 124":"ST2", "CMSC 128":"AB1", ...}
+	"result":0,
+	"data":{
+		"schedule":{"CMSC 161":"UV-1", "CMSC 124":"ST2", "CMSC 128":"AB1", ...}
   }
 }
 ```
@@ -36,7 +36,7 @@ Contains functions that are related to the student profile and schedule.
   Enlists student to a section:
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
@@ -44,7 +44,7 @@ Contains functions that are related to the student profile and schedule.
   Removes student from a section:
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
@@ -52,7 +52,7 @@ Contains functions that are related to the student profile and schedule.
   Returns the position of a student in the waitlist:
 ```
 {
-	result:3
+	"result":3
 }
 ```
 
@@ -60,7 +60,7 @@ Contains functions that are related to the student profile and schedule.
   Waitlists student to a section:
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
@@ -68,7 +68,7 @@ Contains functions that are related to the student profile and schedule.
   Removes a student from the waitlist of a section:
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
@@ -76,7 +76,7 @@ Contains functions that are related to the student profile and schedule.
   Finalizes the schedule of a student:
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
@@ -88,8 +88,8 @@ Contains functions that manages the session.
   Tries to authenticate with given credentials and returns session key
 ```
 {
-	result:0,
-  key: "YTk0ODkwNGYyZjBmNDc5YjhmODE5NzY5NGIzMDE"  
+	"result":0,
+	"key": "YTk0ODkwNGYyZjBmNDc5YjhmODE5NzY5NGIzMDE"  
 }
 ```
 
@@ -97,25 +97,26 @@ Contains functions that manages the session.
   Terminates session of given session key
 ```
 {
-	result:0
+	"result":0
 }
 ```
 
 ## /subjects
 Contains functions that deal with subjects
 
-### GET /subjects/[SUBJECT]/[SECTION] (TODO)
-  Returns the number of slots left for a given section:
+### GET /subjects/slots?subject=[SUBJECT]&sections=[SECTION],[SECTION],[SECTION]...
+  Returns the number of slots left for the given sections:
 ```
 {
-	result:4,
+	"result":0,
+	"data": {"UV": 4, "UV-1L": 4}
 }
 ```
 
-### GET /subjects/create?session=[SID]&subject=[SUBJECT]&section=[SECTION]&max_slots=10&{lecture=A}
-  Returns the number of slots left for a given section:
+### PUT /subjects/create?session=[SID]&subject=[SUBJECT]&section=[SECTION]&max_slots=10&{lecture=A}
+  Creates a new subject (ADMIN):
 ```
 {
-	result:4,
+	"result":4,
 }
 ```

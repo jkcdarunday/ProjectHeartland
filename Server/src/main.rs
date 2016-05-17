@@ -70,7 +70,7 @@ fn main(){
     );
 
     let subject_router = router!(
-        get "/:subject" => handler::Subject::get,
+        get "/slots" => handler::Subject::get,
         put "/create" => handler::Subject::put
     );
 
@@ -85,7 +85,7 @@ fn main(){
     let mut mount = Mount::new();
     mount.mount("/student/", student_router);
     mount.mount("/auth/", auth_router);
-    mount.mount("/subjects/", subject_router);
+    mount.mount("/subject/", subject_router);
 
     let mut chain = Chain::new(mount);
     chain.link(Read::<RedisPool>::both(redis_db));
