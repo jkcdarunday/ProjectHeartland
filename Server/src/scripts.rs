@@ -30,7 +30,7 @@ pub fn get_scripts() -> HashMap<String, Script>{
         "student_profile",
         "subject_waitlist_count", "subject_slots",
         "auth_login", "auth_logout", "auth_register",
-        "admin_subject_add", "admin_student_add"
+        "admin_subject_add", "admin_student_add", "admin_create"
      ];
 
     for file in filenames {

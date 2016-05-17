@@ -398,7 +398,26 @@ impl Admin{
             Ok(Response::with((status::Ok, format!("\"result\" :0"))))
     }
 
-    pub fn create_admin(_: &mut Request) -> IronResult<Response> {
-            Ok(Response::with((status::Ok, format!("\"result\" :0"))))
+    pub fn create_admin(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+        let username = query.get("username").unwrap().get(0).unwrap().clone();
+        let password = {
+            let password = query.get("password").unwrap().get(0).unwrap();
+            let mut blake = Blake2b::new(32);
+            blake.input_str(&password);
+            blake.result_str()
+        };
+        let res: i32 = match query.get("session") {
+            Some(session_list) =>
+                scripts["admin_create"].arg(session_list.get(0).unwrap().clone()).arg(username).arg(password).invoke(redis_connection).unwrap(),
+            None =>
+                scripts["auth_register"].arg(username).arg(password).arg(9).invoke(redis_connection).unwrap()
+        };
+        Ok(Response::with((status::Ok, format!("{{ \"result\" :{} }}", res))))
     }
 }

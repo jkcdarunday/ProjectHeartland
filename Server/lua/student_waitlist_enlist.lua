@@ -23,6 +23,12 @@ if redis.call('hexists',  student_schedule_key, subject) > 0 then
     return -1 -- student already enrolled
 end
 
+if tonumber(redis.call('get', student_key .. ':total_units'))
+  + tonumber(redis.call('get', subject_section_key .. ':units'))
+  > tonumber(redis.call( 'get', student_key .. ':max_units')) then
+    return -5 -- excessive units
+end
+
 -- Try to get a slot
 local slot = redis.call('lpop', subject_section_key .. ':slots')
 if not slot then
@@ -37,6 +43,9 @@ if not slot then
     end
 else
     -- Give slot to student
+    redis.call('decrby', student_key .. ':total_units',
+      tonumber(redis.call('get', subject_section_key .. ':units'))
+    )
     redis.call('hset', student_schedule_key, subject, section)
     return 1 -- student enlisted instead of waitlisted
 end

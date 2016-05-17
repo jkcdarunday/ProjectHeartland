@@ -25,4 +25,7 @@ end
 redis.call('srem', subject_section_key .. ':waitlisters', student) -- remove from waitlisters
 redis.call('lrem', subject_section_key .. ':waitlist', 0, student) -- remove from waitlist
 redis.call('hdel', student_key .. ':waitlists', subject)
+redis.call('decrby', student_key .. ':total_units',
+  tonumber(redis.call('get', subject_section_key .. ':units'))
+)
 return 0

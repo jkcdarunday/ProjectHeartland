@@ -58,6 +58,10 @@ if lecture_section then
   end
 end
 
+redis.call('decrby', student_key .. ':total_units',
+  tonumber(redis.call('get', subject_section_key .. ':units'))
+)
+
 -- Pop from waitlist and enlist
 local waitlist_done = 0
 while waitlist_done == 0 do
@@ -145,6 +149,9 @@ while waitlist_done == 0 do
           lecture_section_key .. ':schedule_set:' .. day)
       end
     end
+    redis.call('incrby', waitlister_key .. ':total_units',
+      tonumber(redis.call('get', subject_section_key .. ':units'))
+    )
     break
   end
 end

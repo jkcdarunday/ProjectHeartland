@@ -81,7 +81,8 @@ fn main(){
 
     let admin_router = router!(
         post "/import_subjects" => handler::Admin::import_subjects,
-        post "/import_students" => handler::Admin::import_students
+        post "/import_students" => handler::Admin::import_students,
+        post "/create" => handler::Admin::create_admin,
     );
 
     println!("Connecting to database..");

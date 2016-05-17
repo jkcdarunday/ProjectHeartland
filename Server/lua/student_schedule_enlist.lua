@@ -30,6 +30,12 @@ if redis.call('hexists',  student_schedule_key, subject) > 0 then
   return -1
 end
 
+if tonumber(redis.call('get', student_key .. ':total_units'))
+  + tonumber(redis.call('get', subject_section_key .. ':units'))
+  > tonumber(redis.call( 'get', student_key .. ':max_units')) then
+    return -5 -- excessive units
+end
+
 local lecture_section = nil
 local lecture_section_key = nil
 
@@ -75,6 +81,9 @@ if lecture_section ~= nil then
 end
 
 -- Give slot to student
+redis.call('incrby', student_key .. ':total_units',
+  tonumber(redis.call('get', subject_section_key .. ':units'))
+)
 redis.call('hset', student_schedule_key, subject, section)
 redis.call('sadd', subject_section_key .. ':students', student)
 for i,day in pairs(days) do
