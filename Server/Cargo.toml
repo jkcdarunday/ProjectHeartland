@@ -18,3 +18,5 @@ hyper="^0.9"
 redis="*"
 r2d2="0.6"
 r2d2_redis="*"
+
+rustc-serialize="*"

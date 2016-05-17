@@ -3,8 +3,8 @@ local session = ARGV[1]
 local subject = ARGV[2]
 local section = ARGV[3]
 local max_slots = tonumber(ARGV[4])
--- local schedule = ARGV[5]
-local lecture = ARGV[5]
+local schedule = ARGV[5]
+local lecture = ARGV[6]
 
 local role = redis.call('hget', session, 'role')
 if not role == 9 then
@@ -18,6 +18,7 @@ if redis.call('exists', subject_section_key .. ':slots') > 0 then
   return -1 -- section already exists
 end
 
+-- set impurity and lecture
 if string.len(lecture) > 0 then
   local lecture_section_key = 'subjects:' .. subject .. ':' .. lecture
   if redis.call('exists', lecture_section_key .. ':slots') <= 0 then
@@ -31,10 +32,28 @@ if max_slots <= 0 then
   return -3 -- invaled max slots
 end
 
+-- write slots
 local i=0
 for i=1,max_slots,1 do
   redis.call('rpush', subject_section_key .. ':slots', subject_section_subkey)
 end
 redis.call('set', subject_section_key .. ':max_slots', max_slots)
+
+local days = {'mon', 'tue', 'wed', 'thu', 'fri', 'sat'}
+
+-- write schedule
+local scheds = {}
+scheds['mon'],
+ scheds['tue'],
+  scheds['wed'],
+   scheds['thu'],
+    scheds['fri'],
+     scheds['sat']
+     = string.match(schedule, "([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)|([^|]*)")
+for i,day in pairs(days) do
+  for code in string.gmatch(scheds[day], "[^,]+") do
+    redis.call('sadd', subject_section_key .. ':schedule_set:' .. day, tonumber(code))
+  end
+end
 
 return 0

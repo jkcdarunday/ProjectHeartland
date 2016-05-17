@@ -14,6 +14,8 @@ extern crate redis;
 // extern crate r2d2_mysql
 // extern crate mysql_simple
 
+extern crate rustc_serialize;
+
 // Auth crates
 extern crate uuid;
 extern crate crypto;
@@ -77,6 +79,11 @@ fn main(){
         put "/create" => handler::Subject::put
     );
 
+    let admin_router = router!(
+        post "/import_subjects" => handler::Admin::import_subjects,
+        post "/import_students" => handler::Admin::import_students
+    );
+
     println!("Connecting to database..");
     let redis_db = database::redis_connect("redis://127.0.0.1", 512);
     println!("Done.");
@@ -89,6 +96,7 @@ fn main(){
     mount.mount("/student/", student_router);
     mount.mount("/auth/", auth_router);
     mount.mount("/subject/", subject_router);
+    mount.mount("/admin/", admin_router);
 
     let mut chain = Chain::new(mount);
     chain.link(Read::<RedisPool>::both(redis_db));

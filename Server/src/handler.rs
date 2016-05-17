@@ -12,6 +12,7 @@ use router::Router;
 use urlencoded::UrlEncodedQuery;
 
 use persistent::Read;
+use std::io::Read as StdRead;
 
 use database::RedisPool;
 use scripts::Scripts;
@@ -19,6 +20,10 @@ use scripts::Scripts;
 use uuid::Uuid;
 use crypto::blake2b::Blake2b;
 use crypto::digest::Digest;
+
+use redis::Commands;
+
+use rustc_serialize::json::Json;
 
 // TODO:
 // Waitlist DONE
@@ -288,16 +293,78 @@ impl Subject{
         let subject = query.get("subject").unwrap().get(0).unwrap().clone();
         let section = query.get("section").unwrap().get(0).unwrap().clone();
         let max_slots = query.get("max_slots").unwrap().get(0).unwrap().clone();
-        //let subject = query.get("session").unwrap().get(0).unwrap().clone();
+        let schedule = query.get("schedule").unwrap().get(0).unwrap().clone();
         let lecture = match query.get("lecture") {
             Some(s) => s.get(0).unwrap().clone(),
             None => "".to_string()
         };
 
         let result: i32 = scripts["admin_subject_add"]
-        .arg(session).arg(subject).arg(section).arg(max_slots).arg(lecture)
+        .arg(session).arg(subject).arg(section).arg(max_slots).arg(schedule).arg(lecture)
         .invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("\"result\" :{:?}", result))))
+    }
+}
+
+pub struct Admin;
+impl Admin{
+    pub fn import_subjects(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+        let session = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap.get("session").unwrap().get(0).unwrap().clone(),
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+        let role: i32 = redis_connection.hget("sessions:".to_string() + &session.clone(), "role").unwrap();
+
+        if role != 9 {
+            return Ok(Response::with((status::BadRequest)))
+        }
+
+        let mut body = String::new();
+        req.body.read_to_string(&mut body).unwrap();
+        let decoded = Json::from_str(&body);
+        let data = match decoded {
+            Ok(ref data) => data,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        //println!("{:?}", );
+        let mut results = vec![];
+        let subject_data = data.as_object().unwrap();
+        for (subject, value) in subject_data.get("subjects").unwrap().as_object().unwrap().iter() {
+            for (section, value) in value.as_object().unwrap().iter(){
+                let section_object = value.as_object().unwrap();
+                let slots = match section_object.get("slots").unwrap(){
+                    &Json::String(ref slots) => slots.clone(),
+                    _ => "0".to_string()
+                };
+
+                let schedule = match section_object.get("schedule_code").unwrap(){
+                    &Json::String(ref slots) => slots.clone(),
+                    _ => "|||||".to_string()
+                };
+
+                let lecture = match section_object.get("lecture") {
+                    Some(lecture) => match lecture {
+                        &Json::String(ref lecture) => lecture.clone(),
+                        _ => "".to_string()
+                    },
+                    None => "".to_string()
+                };
+
+                let result: i32 = scripts["admin_subject_add"]
+                .arg(session.clone()).arg(subject.clone()).arg(section.clone()).arg(slots).arg(schedule).arg(lecture)
+                .invoke(redis_connection).unwrap();
+                results.push(result);
+            }
+        }
+
+        Ok(Response::with((status::Ok, format!("\"results\" :{:?}", results))))
+    }
+
+    pub fn import_students(_: &mut Request) -> IronResult<Response> {
+            Ok(Response::with((status::Ok, format!("\"result\" :0"))))
     }
 }
