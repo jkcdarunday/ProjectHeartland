@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Heartland Tester Page</title>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <style>
+  .box { padding:20px; margin:20px 0px; }
+  .ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="z-depth-1 box">
+      <div class="row">
+        <form class="col s12">
+          <h5>Authentication</h5>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="username" type="text" class="validate">
+              <label for="username">Username</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="password" type="text" class="validate">
+              <label for="password">Password</label>
+            </div>
+            <div class="input-field col s12" >
+              <input id="session" type="text" class="validated" value="-" disabled>
+              <label for="session">Session ID</label>
+            </div>
+          </div>
+            <input class="btn" type="submit" value="Login" onClick="return login()"></input>
+            <input class="btn" type="submit" value="Logout"></input>
+        </form>
+      </div>
+    </div>
+
+    <div class="z-depth-1 box">
+      <div class="row">
+        <div class="col s12">
+        <h5>Student Profile</h5>
+        <table>
+          <thead>
+          <tr>
+            <th data-field="id">Student #</th>
+            <th data-field="fname">First Name</th>
+            <th data-field="mname">Middle Name</th>
+            <th data-field="lname">Last Name</th>
+            <th data-field="curriculum">Curriculum</th>
+            <th data-field="standing">Standing</th>
+            <th data-field="total_units">Total Units</th>
+            <th data-field="max_units">Max Units</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr id="student_profile">
+            <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn" onClick="return get_profile()">Get Profile</button>
+      </div>
+      </div>
+    </div>
+
+    <div class="z-depth-1 box">
+      <div class="row">
+        <form class="col s12">
+          <h5>Student Enlistment</h5>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="subject" type="text" class="validate tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am tooltip">
+              <label for="subject">Subject</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="section" type="text" class="validate">
+              <label for="section">Section</label>
+            </div>
+          </div>
+            <input class="btn" type="submit" value="Enlist" onClick="return enlist()"></input>
+            <input class="btn" type="submit" value="Cancel" onClick="return cancel()"></input>
+            <input class="btn" type="submit" value="Waitlist" onClick="return waitlist()"></input>
+            <input class="btn" type="submit" value="Unwaitlist" onClick="return unwaitlist()"></input>
+        </form>
+      </div>
+    </div>
+
+    <div class="z-depth-1 box">
+      <div class="row">
+        <div class="col s12">
+        <h5>Student Schedule</h5>
+        <center><canvas width="811px" height="391px" class="responsive-image" id="schedule"></canvas></center>
+        <table>
+          <thead>
+          <tr>
+            <th data-field="subject">Subject</th>
+            <th data-field="section">Section</th>
+            <th data-field="time">Time</th>
+            <th data-field="days">Days</th>
+            <th data-field="units">Units</th>
+            <th data-field="room">Room</th>
+            <th data-field="instructor">Instructor</th>
+          </tr>
+          </thead>
+
+          <tbody id="student_schedule">
+          <tr>
+            <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn" onClick="return get_schedule()">Get Schedule</button>
+      </div>
+      </div>
+    </div>
+
+    <div class="z-depth-1 box">
+      <div class="row">
+        <div class="col s12">
+        <h5>Student Waitlist</h5>
+        <table>
+          <thead>
+          <tr>
+            <th data-field="subject">Subject</th>
+            <th data-field="section">Section</th>
+            <th data-field="time">Time</th>
+            <th data-field="days">Days</th>
+            <th data-field="units">Units</th>
+            <th data-field="room">Room</th>
+            <th data-field="instructor">Instructor</th>
+            <th data-field="position">Position</th>
+          </tr>
+          </thead>
+
+          <tbody id="student_schedule">
+          <tr>
+            <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn">Get Waitlist</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="lib/jquery-2.2.3.min.js" charset="utf-8"></script>
+  <script src="lib/materialize.min.js" charset="utf-8"></script>
+  <script src="lib/schedule-renderer.js" charset="utf-8"></script>
+  <script src="main.js" charset="utf-8"></script>
+</body>
+
+</html>
