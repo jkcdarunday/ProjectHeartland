@@ -21,12 +21,12 @@ use crypto::blake2b::Blake2b;
 use crypto::digest::Digest;
 
 // TODO:
-// Waitlist +
-// Authentication (Sessions)
-// Roles
+// Waitlist DONE
+// Authentication (Sessions)  DONE
+// Roles DONE (partial)
 // TODO_AFTER:
 // Loading of schedule of subjects
-// Server-side conflict checking for each time period
+// Server-side conflict checking for each time period DONE
 
 fn get_db_connection(req: &mut Request) -> r2d2::PooledConnection<r2d2_redis::RedisConnectionManager>{
     req.get::<Read<RedisPool>>().unwrap().get().unwrap()
@@ -41,7 +41,6 @@ impl Enlisted{
             Ok(hashmap) => hashmap,
             Err(_) => return Ok(Response::with((status::BadRequest)))
         };
-
 
         let session = query.get("session").unwrap().get(0).unwrap();
 
@@ -249,7 +248,7 @@ impl Student{
 
         let session = query.get("session").unwrap().get(0).unwrap().clone();
 
-        let result: HashMap<String, String> = scripts["student_profile"].arg(session).invoke(redis_connection).unwrap();
+        let result: HashMap<String, String> = scripts["student_profile"].arg(session    ).invoke(redis_connection).unwrap();
 
         Ok(Response::with((status::Ok, format!("{{ \"result\":0, \"data\":{:?} }}", result))))
     }
