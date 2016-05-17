@@ -27,9 +27,10 @@ pub fn get_scripts() -> HashMap<String, Script>{
     let filenames = vec![
         "student_schedule", "student_schedule_enlist", "student_schedule_cancel",
         "student_waitlist_enlist", "student_waitlist_cancel", "student_waitlist_position",
+        "student_profile",
         "subject_waitlist_count", "subject_slots",
         "auth_login", "auth_logout", "auth_register",
-        "admin_subject_add"
+        "admin_subject_add", "admin_student_add"
      ];
 
     for file in filenames {

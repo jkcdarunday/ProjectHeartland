@@ -205,6 +205,56 @@ impl Auth{
     }
 }
 
+pub struct Student;
+impl Student{
+    pub fn put(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
+        let student_number = query.get("student_number").unwrap().get(0).unwrap().clone();
+        let first_name = query.get("first_name").unwrap().get(0).unwrap().clone();
+        let middle_name = query.get("middle_name").unwrap().get(0).unwrap().clone();
+        let last_name = query.get("last_name").unwrap().get(0).unwrap().clone();
+        let curriculum = query.get("curriculum").unwrap().get(0).unwrap().clone();
+        let standing = query.get("standing").unwrap().get(0).unwrap().clone();
+        let max_units = query.get("max_units").unwrap().get(0).unwrap().clone();
+        //session student_number first_name middle_name last_name curriculum standing max_units
+
+        let result: i32 = scripts["admin_student_add"]
+            .arg(session)
+            .arg(student_number)
+            .arg(first_name)
+            .arg(middle_name)
+            .arg(last_name)
+            .arg(curriculum)
+            .arg(standing)
+            .arg(max_units)
+            .invoke(redis_connection).unwrap();
+
+        Ok(Response::with((status::Ok, format!("{{ \"result\":{} }}", result))))
+    }
+
+    pub fn get(req: &mut Request) -> IronResult<Response> {
+        let redis_connection = &get_db_connection(req) as &redis::Connection;
+        let scripts = req.get::<Read<Scripts>>().unwrap();
+        let query = match req.get::<UrlEncodedQuery>() {
+            Ok(hashmap) => hashmap,
+            Err(_) => return Ok(Response::with((status::BadRequest)))
+        };
+
+        let session = query.get("session").unwrap().get(0).unwrap().clone();
+
+        let result: HashMap<String, String> = scripts["student_profile"].arg(session).invoke(redis_connection).unwrap();
+
+        Ok(Response::with((status::Ok, format!("{{ \"result\":0, \"data\":{:?} }}", result))))
+    }
+}
+
 pub struct Subject;
 impl Subject{
     pub fn get(req: &mut Request) -> IronResult<Response> {

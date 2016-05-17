@@ -60,7 +60,10 @@ fn main(){
 
         get "/waitlist" => handler::Waitlist::get,
         put "/waitlist" => handler::Waitlist::put,
-        delete "/waitlist" => handler::Waitlist::del
+        delete "/waitlist" => handler::Waitlist::del,
+
+        get "/profile" => handler::Student::get,
+        put "/create" => handler::Student::put
     );
 
     let auth_router = router!(
