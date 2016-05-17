@@ -18,8 +18,17 @@ if redis.call('exists', subject_section_key .. ':slots') > 0 then
   return -1 -- section already exists
 end
 
+if string.len(lecture) > 0 then
+  local lecture_section_key = 'subjects:' .. subject .. ':' .. lecture
+  if redis.call('exists', lecture_section_key .. ':slots') <= 0 then
+    return -1 -- lecture section does not exist
+  end
+  redis.call('set', lecture_section_key .. ':impure', 1)
+  redis.call('set', subject_section_key .. ':lecture', lecture)
+end
+
 if max_slots <= 0 then
-  return -2 -- invaled max slots
+  return -3 -- invaled max slots
 end
 
 local i=0
@@ -27,9 +36,5 @@ for i=1,max_slots,1 do
   redis.call('rpush', subject_section_key .. ':slots', subject_section_subkey)
 end
 redis.call('set', subject_section_key .. ':max_slots', max_slots)
-
-if string.len(lecture) > 0 then
-  redis.call('set', subject_section_key .. ':lecture', lecture)
-end
 
 return 0

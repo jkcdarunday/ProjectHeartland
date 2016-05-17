@@ -9,12 +9,16 @@ local section = ARGV[3]
 local subject_section_subkey = subject .. ':' .. section
 local subject_section_key = 'subjects:' .. subject_section_subkey
 
+if redis.call('exists', subject_section_key .. ':impure') > 0 then
+  return -4 -- Enlisting to a lecture scetion (impure)
+end
+
 local days = {'mon', 'tue', 'wed', 'thu', 'fri', 'sat'}
 
 -- Get student number from session key
-local role = redis.call('hget', session, 'role')
-if not (role == 0) then
-  return -9 -- invalid role / not a student
+local role = tonumber(redis.call('hget', session, 'role'))
+if role ~= 0 then
+  return role -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');
 
@@ -61,7 +65,7 @@ end
 
 -- check lecture if it exists
 local lecture_slot = nil
-if(lecture_section) then
+if lecture_section ~= nil then
   lecture_slot = redis.call('lpop', lecture_section_key .. ':slots')
   if not lecture_slot then
     -- return lab slot if no lecture slot
