@@ -27,5 +27,6 @@ redis.call('hmset', student_key .. ':name', 'first', first_name, 'middle', middl
 redis.call('set', student_key .. ':curriculum', curriculum)
 redis.call('set', student_key .. ':standing', standing)
 redis.call('set', student_key .. ':max_units', max_units)
+redis.call('set', student_key .. ':total_units', 0)
 
 return 0

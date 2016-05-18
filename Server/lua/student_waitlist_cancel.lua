@@ -15,13 +15,17 @@ if not role == 0 then
   return -9 -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');
+local student_key = 'students:' .. student
+local student_schedule_key =  student_key .. ':schedule'
 
-local student_schedule_key = 'students:' .. student .. ':schedule'
-
-if not (redis.call('sismember', subject_section_key .. ':waitlisters', student) > 0) then
+if redis.call('sismember', subject_section_key .. ':waitlisters', student) <= 0 then
     return -1 -- subject is not waitlisted
 end
 
 redis.call('srem', subject_section_key .. ':waitlisters', student) -- remove from waitlisters
 redis.call('lrem', subject_section_key .. ':waitlist', 0, student) -- remove from waitlist
+redis.call('hdel', student_key .. ':waitlists', subject)
+redis.call('decrby', student_key .. ':total_units',
+  tonumber(redis.call('get', subject_section_key .. ':units'))
+)
 return 0
