@@ -16,8 +16,12 @@ end
 local actual_password = redis.call('get', user_key .. ':password')
 if(password == actual_password) then
   local number = redis.call('get', user_key .. ':number')
+  if not number then
+    number = ""
+  end
   local role = redis.call('get', user_key .. ':role')
-  redis.call('hmset', 'sessions:' .. session_id, 'number', number, 'role', role)
+  redis.call('hmset', 'sessions:' .. session_id,
+   'number', number, 'role', role)
   return 0
 else
   return -1 -- incorrect password

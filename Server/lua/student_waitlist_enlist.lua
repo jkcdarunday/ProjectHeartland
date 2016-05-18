@@ -8,6 +8,10 @@ local subject = ARGV[2]
 local section = ARGV[3]
 local subject_section_key = 'subjects:' .. subject .. ':' .. section
 
+if redis.call('exists', subject_section_key .. ':slots') <= 0 then
+  return -6 -- Enlisting to a non-existant section
+end
+
 -- Get student number from session key
 local role = redis.call('hget', session, 'role')
 if not role == 0 then

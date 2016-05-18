@@ -24,6 +24,9 @@ local student_schedule_key = student_key .. ':schedule'
 if redis.call('hexists', student_schedule_key, subject) <= 0 then
     return -1 -- subject is not enlisted
 end
+if redis.call('hget', student_schedule_key, subject) ~= section then
+    return -2 -- invalid section
+  end
 
 -- Get lecture section if it exists
 local lecture_section = nil
