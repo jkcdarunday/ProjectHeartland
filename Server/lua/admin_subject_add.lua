@@ -9,12 +9,14 @@ local lecture = ARGV[7]
 local pure = tonumber(ARGV[8])
 
 local role = redis.call('hget', session, 'role')
-if not role == 9 then
+if role ~= 9 then
   return -9 -- invalid role / not an admin
 end
 
 local subject_section_subkey = subject .. ':' .. section
 local subject_section_key = 'subjects:' .. subject_section_subkey
+
+redis.call('expire', session, 18000)
 
 if redis.call('exists', subject_section_key .. ':slots') > 0 then
   return -1 -- section already exists

@@ -3,11 +3,13 @@
 -- Declare variables
 local session = 'sessions:' .. ARGV[1]
 local role = redis.call('hget', session, 'role')
-if not role == 0 then
+if role ~= 0 then
   return {"result", -9} -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');
 local student_key = 'students:' .. student
+
+redis.call('expire', session, 18000)
 
 local profile_map = {}
 

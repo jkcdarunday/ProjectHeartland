@@ -9,11 +9,13 @@ local standing = ARGV[7]
 local max_units = tonumber(ARGV[8])
 
 local role = redis.call('hget', session, 'role')
-if not role == 9 then
+if role ~= 9 then
   return -9 -- invalid role / not an admin
 end
 
 local student_key = 'students:' .. student_number
+
+redis.call('expire', session, 18000)
 
 if redis.call('exists', student_key .. ':name') > 0 then
   return -1 -- section already exists

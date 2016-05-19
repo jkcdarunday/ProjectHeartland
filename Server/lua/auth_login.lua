@@ -22,6 +22,7 @@ if(password == actual_password) then
   local role = redis.call('get', user_key .. ':role')
   redis.call('hmset', 'sessions:' .. session_id,
    'number', number, 'role', role)
+  redis.call('expire', 'sessions:' .. session_id, 18000)
   return 0
 else
   return -1 -- incorrect password
