@@ -21,7 +21,7 @@ local days = {'mon', 'tue', 'wed', 'thu', 'fri', 'sat'}
 
 -- Get student number from session key
 local role = tonumber(redis.call('hget', session, 'role'))
-if role ~= 0 then
+if tonumber(role) ~= 0 then
   return role -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');

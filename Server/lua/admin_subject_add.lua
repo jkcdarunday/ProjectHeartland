@@ -9,7 +9,7 @@ local lecture = ARGV[7]
 local pure = tonumber(ARGV[8])
 
 local role = redis.call('hget', session, 'role')
-if role ~= 9 then
+if tonumber(role)~= 9 then
   return -9 -- invalid role / not an admin
 end
 
