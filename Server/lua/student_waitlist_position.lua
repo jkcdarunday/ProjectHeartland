@@ -10,12 +10,15 @@ local subject_section_key = 'subjects:' .. subject .. ':' .. section
 
 -- Get student number from session key
 local role = redis.call('hget', session, 'role')
-if not role == 0 then
+if role ~= 0 then
   return -9 -- invalid role / not a student
 end
 local student = redis.call('hget', session, 'number');
 
 local student_schedule_key = 'students:' .. student .. ':schedule'
+
+redis.call('expire', session, 18000)
+
 local waitlist = redis.call('lrange', subject_section_key .. ':waitlist', 0, -1)
 for i=1,#waitlist do
     if waitlist[i] == student then

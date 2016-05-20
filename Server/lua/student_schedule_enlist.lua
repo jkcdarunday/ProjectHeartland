@@ -9,6 +9,10 @@ local section = ARGV[3]
 local subject_section_subkey = subject .. ':' .. section
 local subject_section_key = 'subjects:' .. subject_section_subkey
 
+if redis.call('exists', subject_section_key .. ':slots') <= 0 then
+  return -6 -- Enlisting to a non-existant section
+end
+
 if redis.call('exists', subject_section_key .. ':impure') > 0 then
   return -4 -- Enlisting to a lecture scetion (impure)
 end
@@ -24,6 +28,8 @@ local student = redis.call('hget', session, 'number');
 
 local student_key = 'students:' .. student
 local student_schedule_key = student_key .. ':schedule'
+
+redis.call('expire', session, 18000)
 
 -- Check if subject is already enrolled
 if redis.call('hexists',  student_schedule_key, subject) > 0 then

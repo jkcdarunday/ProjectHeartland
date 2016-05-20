@@ -21,9 +21,14 @@ local student = redis.call('hget', session, 'number');
 local student_key = 'students:' .. student
 local student_schedule_key = student_key .. ':schedule'
 
+redis.call('expire', 'sessions:' .. session_id, 18000)
+
 if redis.call('hexists', student_schedule_key, subject) <= 0 then
     return -1 -- subject is not enlisted
 end
+if redis.call('hget', student_schedule_key, subject) ~= section then
+    return -2 -- invalid section
+  end
 
 -- Get lecture section if it exists
 local lecture_section = nil
