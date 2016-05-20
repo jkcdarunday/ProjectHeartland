@@ -1,4 +1,4 @@
-\documentclass[draft]{sigchi}
+\documentclass{sigchi}
 
 % Use this command to override the default ACM copyright statement
 % (e.g. for preprints).  Consult the conference website for the
@@ -320,7 +320,7 @@ handle medium and heavy workloads by using load testing tools and services.
 These tests will use combinations of the different functions at ratios expected
 during actual use of the system. 
 
-Benchmarks are run on both the API server and the database management system.
+Benchmarks were ran on both the API server and the database management system.
 
 The API server is benchmarked by running the tools wrk and apachebench. These two tools apply 
 load to the server by running thousands of connections and recording either the number
@@ -382,9 +382,27 @@ makes the evaluation of the speed of a script when there are a certain number of
   Figure 2. API server requests per second on a Dual Core i7-5600U
 \end{center}
 
+In Figure 1, it is shown that the database management system, Redis, was able to serve an average of 83,400
+requests per second in an Intel Core i7-5600U. It should be noted that Redis is only able to utilize a single core
+so scaling through sharding will increase these numbers significantly. 
+
+In Figure 2, it can be seen that the requests per second went down
+from the database average of 83,400 to 17,600 with low deviation on the same machine.
+This shows that the overhead caused by the API server is the bottleneck in this setup. 
+Early tests in the API server showed higher number of requests per second
+that can be blamed on the addition of URL parsers, data persistence middlewares, and JSON encoders
+that likely caused the reduction in the serving-speed. However, these benchmarks only shows its performance
+on a dual core system and the API server is highly multithreaded which implies that it could perform much faster
+on multicore and multiprocessor servers. Moreover, the API server can also be scaled by using a load balancer
+with it running on multiple servers that share the same database. 
 
 \section{Summary and Conclusion}
 
+Based on the results of the system evaluation, we can conclude that the system is efficient enough to handle most 
+universities with large student 
+populations such as the University of the Philippines Los Baños that has around 13,710 students even if each student
+does an API requests once per second. It can be implied that it can also serve populations much larger than the benchmark
+results through scaling. 
 % REFERENCES FORMAT
 % References must be the same font size as other body text.
 \bibliographystyle{sigchi}
