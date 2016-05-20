@@ -1,4 +1,4 @@
-\documentclass{sigchi}
+\documentclass[draft]{sigchi}
 
 % Use this command to override the default ACM copyright statement
 % (e.g. for preprints).  Consult the conference website for the
@@ -16,12 +16,14 @@
 \usepackage{balance}  % to better equalize the last page
 \usepackage{graphics} % for EPS, load graphicx instead 
 \usepackage[T1]{fontenc}
+\usepackage{placeins}
 \usepackage{txfonts}
 \usepackage{mathptmx}
 \usepackage[pdftex]{hyperref}
 \usepackage{color}
 \usepackage{booktabs}
 \usepackage{textcomp}
+\usepackage{pgfplots}
 % Some optional stuff you might like/need.
 \usepackage{microtype} % Improved Tracking and Kerning
 % \usepackage[all]{hypcap}  % Fixes bug in hyperref caption linking
@@ -37,7 +39,7 @@
 % Paper metadata (use plain text, for PDF inclusion and later
 % re-using, if desired).  Use \emtpyauthor when submitting for review
 % so you remain anonymous.
-\def\plaintitle{University of the Philippines Los Baños Online Student Information System}
+\def\plaintitle{Flash Crowd Online Student Enrollment System}
 \def\plainauthor{Jan Keith Darunday, Ferriel Lisandro Melarpis, Toni-Jan Keith Monserrat, and Reginald Neil Recario}
 \def\emptyauthor{}
 \def\plainkeywords{Authors' choice; of terms; separated; by
@@ -110,9 +112,9 @@
   \alignauthor{Toni-Jan Keith Monserrat\\
     \affaddr{Los Ba\~{n}os, Philippines}\\
     \email{tonijanmonserrat@gmail.com}}\\
-%   \alignauthor{Reginald Neil Recario\\
-%     \affaddr{Los Ba\~{n}os, Philippines}\\
-%     \email{rcrecario@up.edu.ph}}\\
+  \alignauthor{Reginald Neil Recario\\
+    \affaddr{Los Ba\~{n}os, Philippines}\\
+    \email{rcrecario@up.edu.ph}}\\
 }
 
 \maketitle
@@ -126,12 +128,21 @@
 
 \section{Introduction}
 
-In campuses under the University of the Philippines (UP) System, students have 
-more freedom to choose the subjects that they want to enroll in compared to other
-universities. UP employs the Revitalized General Education Program (RGEP) that
-requires students to take General Education (GE) courses. They have the ability to
-choose which of these courses they would like to enlist in.
-These GE courses are courses that allow students from any degree program to enroll
+In academic institutions with large student populations such as campuses under
+the University of the Philippines (UP) System, the implementation of an online registration
+system for students is considered to be one of the biggest challenges as the system needs
+to be capable of handling the surge of network connections from the whole student population
+during the online registration period. Some of these systems were created by students studying 
+in their respective universities and some of the others were created by software development
+companies paid by the university. However, many of these systems failed
+to address need of the institution that it serves due to issues like lack of budget, lack of development time,
+use of wrong or outdated technologies, and lack of consultation of what the users actually need.
+
+This research paper will use the enrollment system and online registration system in
+the University of the Philippines as a context.
+
+In the UP System, students are free to enlist into General Education (GE)
+courses. These GE courses are courses that allow students from any degree program to enlist into
 unlike major courses that are only available to certain degree programs. The
 ability to choose one’s subjects implied that almost all students will need to
 manually fill-up their list of courses to enroll to before the beginning of 
@@ -152,20 +163,17 @@ revisions and improvements as old technology become deprecated by new ones and p
 encountered in previous versions are fixed. The most recent one identifies itself as the third
 version and is code-named “Decaf”. However, this system did not prove to be efficient enough
 for the student population of UPLB despite several rewrites and revisions.
+This paper seeks to improve open this kind of online registration by fixing the problems encountered
+by SystemOne as a basis.
 
-As a solution, we propose that there needs to be a complete rewrite of 
-the system. Because SystemOne is originally written in the PHP programming 
+Because SystemOne is originally written in the PHP programming 
 language which has been known to be slow, using a faster programming language 
 would be an improvement. SystemOne also has its database connection as its 
 bottleneck but it tries to solve this by using memcache as a caching system. 
 However, this wasn't efficient enough as queries executed by the backend is too
-dynamic which makes the results hard to cache. In order to alleviate the effects
-of this bottlneck, we propose that three differnt database/storage systems will
-be used. One will be a RAM-based storage system with high-speed read/write that
-does not need to support queries, another would be a database system that 
-supports fast queries and uses a non-volatile memory storage, the last one would
-be a full-fledged relational database system that will be used for persistent
-storage.
+dynamic which makes the results hard to cache. There are also lots of workarounds
+that try to solve the race conditions that occur. Our system will try to solve this
+by choosing a more feasible database system for sudden surges of requests.
 
 \section{Related Work}
 
@@ -219,29 +227,24 @@ given consideration.
 
 \subsection{Database}
 
-The system will utilized three database systems. These database systems are as
-follows:
-\begin{enumerate}
-\item High-Speed Read and Write Storage System - This will be shared across all
-clusters. This needs to high speed because it will used to store information
-that change very fast and is read repeatedly such as the number of slots for
-every subject.
+As an information system, the speed of the system depends heavily on the speed
+of the database management system since most of the requests that it handles
+do modification of data. Because of this, Redis was chosen as it is a database
+management system that has low runtime overhead and very fast request-serving
+speeds with benchmarks showing hundreds of thousands of requests per second for
+atomic functions.
 
-\item High-Speed Read and Medium-Speed Write Relational Database System - Also 
-shared across all clusters, this will contain data and information that are not
-changed often but are read a repeatedly a lot such as the information for subjects
-and their dependencies, user accounts, and recommended courses.
-
-\item Persistent Relational Database System - This will be used as the permanent
-storage for all data. The other two storage and database systems will synchronize
-to this database at specific intervals.
-\end{enumerate}
-
-
+In order to achieve its speed, Redis sacrifices data integrity by writing
+and reading all data to and from the main memory of the system. This leads to possible
+data loss upon the occurance of a power interruption while Redis hasn't yet synchronized
+its data to permanent storage. However, this should not matter as long as the server
+has proper uninterruptible power supply systems in place. Even if such an event occurs,
+Redis uses sequential writing which will simply cancel out the latest writes causing a
+rollback rather than corrupting the whole database.
 
 \subsection{Backend}
 
-The backend will be a server that serves a Representational State Transfer (REST)
+The backend is a server that serves a Representational State Transfer (REST)
 Application Programming Interface (API) through the Hypertext Transfer Protocol
 (HTTP). The system's backend shall have multithreading support. A thread will be 
 spawned for every successful HTTP connection. This thread will handle its own
@@ -254,69 +257,82 @@ corresponding thread being deallocated from the memory.
 
 Every time a modification or addition is done on a student's schedule, the 
 backend will check for conflicts before executing the specified action. 
-To do this, a bitwise AND will be done on the current user's schedule and the
-schedule of the subject to be inserted. If the resulting value is not 0 then
-an error reply will be sent.
+In order to implement this, the students schedule is stored as a set of numbers
+that represent the index of each 15-minute block throughout the day beginning at
+7:00 AM. For example, the number represents the time from 7:00AM to 7:15AM. This
+representation is also applied to the schedule of each subject. 
+
+With the said representation of schedules, conflict checking is done by simply executing
+a set intersection of the schedule of the student and the schedule of the subject. If the
+resulting set does not have the size of zero, then it can be said that there is a conflict
+between the two schedules.
 
 \subsubsection{Cross-Site HTTP Requests}
 
-The system will be designed to support HTTP Requests from specific domains
+The system is designed to support HTTP Requests from specific domains
 where the frontend code will be stored through the Access-Control-Allow-Origin header. 
-This is to be able to outsource the load added by frontend data being served as 
+This allows us to outsource the load added by frontend data being served as 
 it will take a significant amount of networking bandwidth to serve the images and
 scripts included. This will also allow the frontend to have heavier images and 
-scripts without affecting the performance of the main server.
-
+scripts without affecting the performance of the main server. 
 
 \subsection{Frontend}
 
-The frontend will be a static web application that fires REST requests to the
-backend server. The Javascript Object Notation (JSON) will be used to specify parameters
-for commands that require sending non-anonymous data while a normal GET request
-will be used for reading anonymous data. The frontend will also have an enlistment queue
-where the user can setup which subjects he/she would like to enlist and then
-send them as a batch to the server. This would lessen the number of connections
-that the server will receive lessening the number of threads running in the 
-backend.
+The frontend is a static web application that fires REST requests to the
+backend server. Requests use HTTP methods such as GET, POST, PUT, and DELETE to 
+specify how data on the server is specified. Some of the commands have the same URL
+but is executed by specifying the HTTP method. For example, a PUT request on the schedule
+URL enlists a subject while a DELETE request on the same URL will cancel a subject. the
+server will then respond with the result in Javascript Object Notation (JSON) format that
+includes the resulting data and the return code specifying the kind of error or if there is
+no error.
 
-The design for the frontend will try to follow Google's Material Design 
+A copy of the list of subjects and schedules in JSON format is also loaded with the backend
+making subject searching fast and reducing API server load by not sending requests that are known 
+to fail such as enlistment and waitlisting of already-conflicting subjects.
+
+The static file server of the frontend can be served on a server with a caching service
+like CloudFlare enabled which would cache the static web application into its own 
+Content Delivery Network(CDN).
+
+Moreover, the static web application can also be cached on the browser of the client by
+specifying Cache-Control headers. We can go even further by utilizing IndexDB, AppCache,
+and localStorage capabilities to store the frontend application which will completely store
+the application in the browser making it accessible even if the static server is down.
+
+This setup also lessens the number of connections that the server will receive lessening
+the number of threads running in the backend. This also alleviates the additional load 
+caused by students opening the site in multiple tabs and refreshing each tab repeatedly.
+
+The design for the frontend tries to follow Google's Material Design 
 Specification although not strictly. Along with this, it shall support mobile
 platforms by implementing Responsive Design. 
 
 %TODO: Should be 1/2
 \section{Evaluation}
 
-The system shall be evaluated by its stability, efficiency, ease of use, and
-integration. 
+The system is evaluated by its stability and efficiency.
 
-Its stability will be evaluated by running a fuzzer software on the different
-commands that the backend server accepts. If the fuzzer finds strings that 
-causes the backend to crash, show an error, or produce the wrong output then the
-system fails the stability test. If this happens, the errors shall be fixed and
-the system will again undergo the stability evaluation.
-
-The system's efficiency will be evaluated by running benchmarks on the system.
+The system's stability and efficiency were evaluated by running benchmarks on the system.
 Information such as requests per second, time per request, and transfer rate
-of each function will be collected. The system will also be tested if can 
+of each function are collected. The system was also be tested if it can 
 handle medium and heavy workloads by using load testing tools and services.
 These tests will use combinations of the different functions at ratios expected
 during actual use of the system. 
 
-The system's ease of use will be evaluated through a survey along with additional
-criteria about other aspects of the system.
-The survey will be done with at least 500 respondents that will test the system
-and rate it under the following criteria:
-\begin{enumerate}
- \item the ability of the user-interface to be understandable without a manual;
- \item the way how buttons in the user-interface are positioned;
- \item the animations embedded into the user-interface
- \item the responsiveness of the system; and
- \item the additional features of the system.
-\end{enumerate}
+Benchmarks are run on both the API server and the database management system.
+
+The API server is benchmarked by running the tools wrk and apachebench. These two tools apply 
+load to the server by running thousands of connections and recording either the number
+of requests done after a certain duration or the time it takes for a specified number of requests to finish.
+
+On the other hand, the database management system is benchmarked by running its own benchmarking tool
+that can benchmark server-side scripts and simulate its interaction with a specified number of keys which
+makes the evaluation of the speed of a script when there are a certain number of data on the server much easier.
 
 \section{Timeline}
 \begin{center}
-    \begin{tabular}{ | l | p{5cm} |}
+    \begin{tabular}[!htbp]{ | l | p{5cm} |}
     \hline
       Date & Activity \\ \hline
       Day 0-7 & Planning of System Framework and Database Structures \\ \hline
@@ -332,10 +348,47 @@ and rate it under the following criteria:
     \end{tabular}
 \end{center}
 
+\section{Results and Discussion}
+\begin{tikzpicture}
+  \begin{axis}[ ybar, 
+		legend style={at={(0.5,-0.2)}, 
+		anchor=north,legend columns=-1}, 
+		ylabel={1000x Req/s}, 
+		symbolic x coords={Enlist, Cancel, Get Sched, Get Slots, Waitlist, Unwaitlist},
+		xtick=data, 
+		nodes near coords, 
+		nodes near coords align={vertical}, 
+		x tick label style={rotate=45,anchor=east}, ]
+		\addplot coordinates {(Enlist,65.5) (Cancel,49.0) (Get Sched,140.9) (Get Slots,102.3) (Waitlist,69.0) (Unwaitlist,73.7)};
+  \end{axis}
+\end{tikzpicture}
+\begin{center}
+  Figure 1. Database requests per second
+\end{center}
+\begin{tikzpicture}
+  \begin{axis}[ ybar, 
+		legend style={at={(0.5,-0.2)}, 
+		anchor=north,legend columns=-1}, 
+		ylabel={1000x Req/s}, 
+		symbolic x coords={Enlist, Cancel, Get Sched, Get Slots, Waitlist, Unwaitlist},
+		xtick=data, 
+		nodes near coords, 
+		nodes near coords align={vertical}, 
+		x tick label style={rotate=45,anchor=east}, ]
+		\addplot coordinates {(Enlist,18.1) (Cancel,17.7) (Get Sched,17.1) (Get Slots,17.6) (Waitlist,17.5) (Unwaitlist,17.7)};
+  \end{axis}
+\end{tikzpicture}
+\begin{center}
+  Figure 2. API server requests per second on a Dual Core i7-5600U
+\end{center}
+
+
+\section{Summary and Conclusion}
+
 % REFERENCES FORMAT
 % References must be the same font size as other body text.
 \bibliographystyle{sigchi}
-\bibliography{paper}
+\bibliography{sp2-paper}
 
 %\cleardoublepage
 
