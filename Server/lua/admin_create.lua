@@ -7,7 +7,7 @@ local username = ARGV[2]
 local password = ARGV[3]
 local session = 'sessions:' .. ARGV[1]
 local role = redis.call('hget', session, 'role')
-if role ~= 9 then
+if tonumber(role) ~= 9 then
   return -9 -- invalid role / not an admin
 end
 
