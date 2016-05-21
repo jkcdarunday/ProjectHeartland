@@ -119,12 +119,26 @@
 
 \maketitle
 
-% \begin{abstract}
-% \end{abstract}
+\begin{abstract}
+One of the challenges of universities with high student populations in the Philippines is the implementation of
+an online enrollment system. Many of these systems were not tested to handle sudden heavy influx of user connections
+and the technologies used are not best-fitted for such occurence. In this research, we design and implement a system
+that can perform well under sudden surge of users by applying recent technological advances and design techniques. 
+We use Redis as the database for fast atomic database access, Rust as a language with Iron as the web server framework for faster 
+serving of HTTP requests by removing the need for a garbage collector, and the split client-server architecture that allows
+the offloading of heavy content to static servers. The implemented system is tested by running benchmarks on both the database and
+the server that will handle HTTP requests and measuring the number of requests per second. From this, we can see how it will perform
+during sudden heavy load that occur during the online registration period. The results proved the efficiency of the system by showing
+that it can serve an average of 17,600 requests per second with the database serving 83,400 requests per second on a dual-core system.
+Moreover, because the system is designed to be multithreaded and utilize all cores, the server should be able to linearly scale when
+more cores are added making it able to serve more than 50,000 requests on a higher-end computer. In the future, improvements in the Iron
+web server framework such as asynchronous IO, and faster parsing algorithms could further improve the server speed of the system
+as they are some of the bottlenecks of the system.
+\end{abstract}
 % 
 % \category{K.3.2}{Computing Milieux}{COMPUTERS AND EDUCATION }{Computer and Information Science Education }
 % 
-\keywords{student; information; registration; enrollment}
+\keywords{student; information; registration; enrollment; Rust; Redis; static webapp}
 
 \section{Introduction}
 
@@ -330,24 +344,6 @@ On the other hand, the database management system is benchmarked by running its 
 that can benchmark server-side scripts and simulate its interaction with a specified number of keys which
 makes the evaluation of the speed of a script when there are a certain number of data on the server much easier.
 
-\section{Timeline}
-\begin{center}
-    \begin{tabular}[!htbp]{ | l | p{5cm} |}
-    \hline
-      Date & Activity \\ \hline
-      Day 0-7 & Planning of System Framework and Database Structures \\ \hline
-      Day 8-14 & Implementation of Basic Backend Functions Without Conflict Checking \\ \hline
-      Day 15-30 & Implementation of Conflict Checking and Integration with Backend \\ \hline
-      Day 31-45 & Development of Static Web Application Interface \\ \hline
-      Day 46-60 & Implementation of Advanced Features \\ \hline
-      Day 61-68 & Stress Testing and Fuzzing \\ \hline
-      Day 69-76 & Adjustments from the Results of Stress Testing and Fuzzing \\ \hline
-      Day 77-81 & Alpha Test of Test Users \\ \hline
-      Day 82-96 & Adjustments from the Results of Alpha Test \\ \hline
-      Day 97-103 & Beta Release \\ \hline
-    \end{tabular}
-\end{center}
-
 \section{Results and Discussion}
 \begin{tikzpicture}
   \begin{axis}[ ybar, 
@@ -363,7 +359,7 @@ makes the evaluation of the speed of a script when there are a certain number of
   \end{axis}
 \end{tikzpicture}
 \begin{center}
-  Figure 1. Database requests per second
+  Figure 1. Database requests per second on a Dual Core i7-5600U
 \end{center}
 \begin{tikzpicture}
   \begin{axis}[ ybar, 
