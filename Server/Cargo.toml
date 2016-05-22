@@ -1,6 +1,22 @@
 [package]
-name = "Server"
+name = "heartland-server"
 version = "0.1.0"
 authors = ["Jan Keith Darunday <jkcdarunday@gmail.com>"]
 
 [dependencies]
+iron="*"
+router="*"
+mount="*"
+persistent="*"
+urlencoded="*"
+
+uuid = { version = "0.2", features = ["v4"] }
+rust-crypto = "^0.2"
+
+hyper="^0.9"
+
+redis="*"
+r2d2="0.6"
+r2d2_redis="*"
+
+rustc-serialize="*"
