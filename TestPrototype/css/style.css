@@ -1,0 +1,154 @@
+#login-form {
+    position: absolute;
+    background-image: url('../images/uplb-pegaraw-blur.jpg');
+    background-size: cover;
+    box-shadow: 10px 0px 10px -10px #000;
+    z-index: 1000;
+}
+
+#login-form #main-form {
+    width: 400px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: thin solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+}
+
+#login-form #mainform input {
+    border: 0px solid #fff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+#main #leftMenu {
+    position: fixed;
+    width: 250px;
+    transform: translateX(0%);
+    transform: translateY(0%);
+    overflow: ellipsis;
+    height: 100%;
+}
+
+#main #leftMenu #userData {
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-bottom: thin solid #445566;
+    padding: 10px;
+}
+
+#main #leftMenu #userData #user {
+    width: 250px;
+}
+
+#main #leftMenu #userData #user #iconContainer {
+    height: 50px;
+    width: 50px;
+    margin: 0px;
+    padding: 0px;
+    line-height: 0px;
+    border-radius: 50%;
+}
+
+#main #leftMenu #userData #user #icon {
+    height: 50px;
+    width: 50px;
+    margin: 0px;
+    padding: 0px;
+    border-radius: 50%;
+}
+
+#main #leftMenu #userData #user #name {
+    padding-left: 5px;
+    padding-bottom: 6px;
+    width: 150px;
+    text-overflow: ellipsis;
+}
+
+#main #leftMenu #userData{
+  width:250px;
+  padding:10px;
+}
+
+#main #leftMenu #userData #info {
+    font-size: 50%;
+    line-height: 0;
+}
+
+#main #leftMenu #mainMenu {
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2) inset;
+    -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2) inset;
+    -o-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2) inset;
+    min-height: 300px;
+}
+
+#main #leftMenu #mainMenu #menuItems {
+    list-style: disc outside none;
+    cursor: default;
+    margin: 0;
+    padding: 0;
+}
+
+#main #leftMenu #mainMenu #menuItems li {
+    position: relative;
+    height: 50px;
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 200px;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+#main #leftMenu #mainMenu #menuItems li:hover {
+    width: 250px;
+    text-shadow: 0px 0px 5px #fff;
+}
+
+#main #leftMenu #mainMenu #menuItems .menuActive {
+    width: 250px;
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);
+    -moz-text-shadow: 0px 0px 10px #fff;
+    -webkit-text-shadow: 0px 0px 10px #fff;
+    -o-text-shadow: 0px 0px 10px #fff;
+    text-shadow: 0px 0px 10px #fff;
+}
+
+#main #leftMenu #mainMenu #menuItems .logOut:hover {
+    background: none repeat scroll 0% 0% rgba(100, 0, 0, 0.2);
+}
+
+#main #leftMenu #mainMenu #logo {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 2.1em;
+}
+
+#main .leftBar {
+    width: 250px;
+}
+
+#main #rightWindow{
+    padding: 0px 0px 0px 250px;
+}
+
+.rightSection {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  left:0px;
+  min-height:100vh;
+  z-index:-10;
+  box-sizing:border-box !important;
+}
+
+.section {
+    height: 100%;
+    width: 100%;
+    transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    z-index: 1;
+}
