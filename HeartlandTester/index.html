@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Heartland Tester Page</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+    <script src="schedule-renderer.js"></script>
+    <style>
+    .box { padding:20px; margin:20px 0px; }
+    .ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
+    </style>
+    <script>
+    function login(){
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:3000/auth/login?username=' + $("#username").val() + '&password=' + $("#password").val(),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.key){
+            $("#session").val(res.key);
+            Materialize.toast("Successfully logged in.", 1000);
+          } else {
+            Materialize.toast("Failed to logged in.", 1000);
+          }
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function register(){
+      var student_number = $('#student_number').val(),
+        username = $('#reg-username').val(),
+        password = $('#reg-password').val(),
+        password_confirm = $('#confirm-password').val();
+
+      if (password === password_confirm) {
+        $.ajax({
+          type: 'PUT',
+          url: 'http://localhost:3000/auth/register/' + student_number + '?username=' + username + '&password=' + password,
+          success: function(data) {
+            var res = JSON.parse(data);
+            if (res.result === 0) {
+              $('#student_number').val('');
+              $('#reg-username').val('');
+              $('#reg-password').val('');
+              $('#confirm-password').val('');
+              Materialize.toast("Successfully registered.", 1000);
+            } else {
+              Materialize.toast("Failed to register. Contact admin for assistance.", 1000);
+            }
+          }
+        })
+      } else {
+        Materialize.toast("Passwords do not match.", 1000);
+      }
+
+      return false;
+    }
+
+    function logout(){
+      $.ajax({
+        type: 'DELETE',
+        url: 'http://localhost:3000/auth/logout?session=' + $("#session").val(),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.result == 0){
+            $("#session").val('-');
+            Materialize.toast("Successfully logged out.", 1000);
+          } else {
+            Materialize.toast("Failed to logged out.", 1000);
+          }
+
+        }
+      })
+      return false
+    }
+
+    function get_profile(){
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/student/profile?session=' + $("#session").val(),
+        success:function(data){
+          var res = JSON.parse(data);
+          $("#student_profile").html(
+            `<td>${res.data.student_number}</td>
+            <td>${res.data.first_name}</td>
+            <td>${res.data.middle_name}</td>
+            <td>${res.data.last_name}</td>
+            <td>${res.data.curriculum}</td>
+            <td>${res.data.standing}</td>
+            <td>${res.data.total_units}</td>
+            <td>${res.data.max_units}</td>`
+          )
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function get_schedule(){
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/student/schedule?session=' + $("#session").val(),
+        success:function(data){
+          var res = JSON.parse(data);
+          var html = ''
+
+          var c = initializeSched($("#schedule")[0]);
+
+          for (subject in res.data){
+            var section = res.data[subject]
+            let subdata = subjects[subject][section]
+            drawSchedule(c, subdata.hours[0], subdata.hours[1], subdata.days, subject, subdata.room, section)
+            if(subdata.lecture){
+              let lecsubdata = subjects[subject][subdata.lecture];
+              drawSchedule(c, lecsubdata.hours[0], lecsubdata.hours[1], lecsubdata.days, subject, lecsubdata.room, subdata.lecture);
+            }
+            html += `
+            <tr><td>${subject}</td>
+            <td>${section}</td>
+            <td>${subdata.time}</td>
+            <td>${subdata.days}</td>
+            <td>${subdata.units}</td>
+            <td>${subdata.room}</td>
+            <td>${subdata.instructor}</td></tr>`
+          }
+          $("#student_schedule").html(html)
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function enlist(){
+      $.ajax({
+        type: 'PUT',
+        url:
+        encodeURI('http://localhost:3000/student/schedule?'
+          + 'session=' + $('#session').val()
+          + '&subject=' + $('#subject').val()
+          + '&section=' + $('#section').val()),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.result == 0) Materialize.toast("Successfully enlisted.", 1000);
+          else Materialize.toast("Failed to enlist.", 1000);
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function cancel(){
+      $.ajax({
+        type: 'DELETE',
+        url:
+        encodeURI('http://localhost:3000/student/schedule?'
+          + 'session=' + $('#session').val()
+          + '&subject=' + $('#subject').val()
+          + '&section=' + $('#section').val()),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.result == 0) Materialize.toast("Successfully cancelled.", 1000);
+          else Materialize.toast("Failed to cancel.", 1000);
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function waitlist(){
+      $.ajax({
+        type: 'PUT',
+        url:
+        encodeURI('http://localhost:3000/student/waitlist?'
+          + 'session=' + $('#session').val()
+          + '&subject=' + $('#subject').val()
+          + '&section=' + $('#section').val()),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.result > 0) Materialize.toast("Successfully waitlisted.", 1000);
+          else Materialize.toast("Waitlisting failed.", 1000);
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    function unwaitlist(){
+      $.ajax({
+        type: 'DELETE',
+        url:
+        encodeURI('http://localhost:3000/student/waitlist?'
+          + 'session=' + $('#session').val()
+          + '&subject=' + $('#subject').val()
+          + '&section=' + $('#section').val()),
+        success:function(data){
+          var res = JSON.parse(data);
+          if(res.result == 0) Materialize.toast("Successfully unwaitlisted.", 1000);
+          else Materialize.toast("Unwaitlisting failed.", 1000);
+          console.log(res)
+        }
+      })
+      return false
+    }
+
+    subjects = {}
+
+
+    $.ajax({
+      url: 'subjects.json',
+      success:function(data){
+        console.log(data)
+        subjects = data.subjects
+      }
+    })
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="z-depth-1 box">
+            <div class="row">
+                <form class="col s12">
+                    <h5>Authentication</h5>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="username" type="text" class="validate">
+                            <label for="username">Username</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="password" type="password" class="validate">
+                            <label for="password">Password</label>
+                        </div>
+                      <div class="input-field col s12" >
+                          <input id="session" type="text" class="validated" value="-" disabled>
+                          <label for="session">Session ID</label>
+                      </div>
+                    </div>
+                      <input class="btn" type="submit" value="Login" onClick="return login()"></input>
+                      <input class="btn" type="submit" value="Logout"></input>
+                </form>
+            </div>
+        </div>
+
+        <div class="z-depth-1 box">
+            <div class="row">
+                <form class="col s12">
+                    <h5>Registration</h5>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="student_number" type="text" class="validate">
+                            <label for="student_number">Student Number</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="reg-username" type="text" class="validate">
+                            <label for="reg-username">Username</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="reg-password" type="password" class="validate">
+                            <label for="reg-password">Password</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="confirm-password" type="password" class="validate">
+                            <label for="confirm-password">Confirm Password</label>
+                        </div>
+                    </div>
+                      <input class="btn" type="submit" value="Register" onClick="return register();"></input>
+                </form>
+            </div>
+        </div>
+
+        <div class="z-depth-1 box">
+            <div class="row">
+              <div class="col s12">
+                <h5>Student Profile</h5>
+                <table>
+                  <thead>
+                    <tr>
+                        <th data-field="id">Student #</th>
+                        <th data-field="fname">First Name</th>
+                        <th data-field="mname">Middle Name</th>
+                        <th data-field="lname">Last Name</th>
+                        <th data-field="curriculum">Curriculum</th>
+                        <th data-field="standing">Standing</th>
+                        <th data-field="total_units">Total Units</th>
+                        <th data-field="max_units">Max Units</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr id="student_profile">
+                      <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn" onClick="return get_profile()">Get Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="z-depth-1 box">
+            <div class="row">
+                <form class="col s12">
+                    <h5>Student Enlistment</h5>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="subject" type="text" class="validate tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am tooltip">
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="section" type="text" class="validate">
+                            <label for="section">Section</label>
+                        </div>
+                    </div>
+                      <input class="btn" type="submit" value="Enlist" onClick="return enlist()"></input>
+                      <input class="btn" type="submit" value="Cancel" onClick="return cancel()"></input>
+                      <input class="btn" type="submit" value="Waitlist" onClick="return waitlist()"></input>
+                      <input class="btn" type="submit" value="Unwaitlist" onClick="return unwaitlist()"></input>
+                </form>
+            </div>
+        </div>
+
+        <div class="z-depth-1 box">
+            <div class="row">
+              <div class="col s12">
+                <h5>Student Schedule</h5>
+                <center><canvas width="811px" height="391px" class="responsive-image" id="schedule"></canvas></center>
+                <table>
+                  <thead>
+                    <tr>
+                        <th data-field="subject">Subject</th>
+                        <th data-field="section">Section</th>
+                        <th data-field="time">Time</th>
+                        <th data-field="days">Days</th>
+                        <th data-field="units">Units</th>
+                        <th data-field="room">Room</th>
+                        <th data-field="instructor">Instructor</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="student_schedule">
+                    <tr>
+                      <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn" onClick="return get_schedule()">Get Schedule</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="z-depth-1 box">
+            <div class="row">
+              <div class="col s12">
+                <h5>Student Waitlist</h5>
+                <table>
+                  <thead>
+                    <tr>
+                        <th data-field="subject">Subject</th>
+                        <th data-field="section">Section</th>
+                        <th data-field="time">Time</th>
+                        <th data-field="days">Days</th>
+                        <th data-field="units">Units</th>
+                        <th data-field="room">Room</th>
+                        <th data-field="instructor">Instructor</th>
+                        <th data-field="position">Position</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="student_schedule">
+                    <tr>
+                      <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td> <td>?</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn">Get Waitlist</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+
+</html>
