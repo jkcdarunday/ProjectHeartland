@@ -122,11 +122,11 @@
 \begin{abstract}
 One of the challenges of universities with high student populations in the Philippines is the implementation of
 an online enrollment system. Many of these systems were not tested to handle sudden heavy influx of user connections
-and the technologies used are not best-fitted for such occurence. In this research, we design and implement a system
-that can perform well under sudden surge of users by applying recent technological advances and design techniques. 
+and the technologies used are not best-fitted for such events. In this research, we design and implement a system
+that can perform well under sudden surges of users by applying the most recent technological advances and design techniques. 
 We use Redis as the database for fast atomic database access, Rust as a language with Iron as the web server framework for faster 
 serving of HTTP requests by removing the need for a garbage collector, and the split client-server architecture that allows
-the offloading of heavy content to static servers. The implemented system is tested by running benchmarks on both the database and
+the offloading of heavy content to static servers. The implemented system was tested by running benchmarks on both the database and
 the server that will handle HTTP requests and measuring the number of requests per second. From this, we can see how it will perform
 during sudden heavy load that occur during the online registration period. The results proved the efficiency of the system by showing
 that it can serve an average of 17,600 requests per second with the database serving 83,400 requests per second on a dual-core system.
@@ -166,19 +166,7 @@ not only will the students need to manually check for conflicts in their
 schedules, they will also need to check if the course that they want to enlist 
 in still has slots remaining.
 
-The complexity of this process along with the increasing availability of Internet access to
-the public incited the development of computerized Online Registration Systems (ORS). These
-systems allowed the enlistment, cancellation, and swapping of slots for courses over the Internet.
-These systems also did the checking of conflicting subjects and availability of slots automatically
-so that students will not need to do them manually.
-In the University of the Philippines Los Baños (UPLB), the Online Registration System that
-is used as of the writing of this paper is called SystemOne. This system has undergone various
-revisions and improvements as old technology become deprecated by new ones and problems
-encountered in previous versions are fixed. The most recent one identifies itself as the third
-version and is code-named “Decaf”. However, this system did not prove to be efficient enough
-for the student population of UPLB despite several rewrites and revisions.
-This paper seeks to improve open this kind of online registration by fixing the problems encountered
-by SystemOne as a basis.
+The complexity of this process along with the increasing availability of Internet access to the public incited the development of computerized Online Registration Systems (ORS). These systems allowed the enlistment, cancellation, and swapping of slots for courses over the Internet. These systems also did the checking of conflicting subjects and availability of slots automatically so that students will not need to do them manually. In the University of the Philippines Los Baños (UPLB), the Online Registration System that is used as of the writing of this paper is called SystemOne. This system has undergone various revisions and improvements as old technology become deprecated by new ones and problems encountered in previous versions are fixed. The most recent one identifies itself as the third version and is code-named “Decaf”. However, this system did not prove to be efficient enough for the student population of UPLB despite several rewrites and revisions. This paper seeks to improve open this kind of online registration by fixing the problems encountered by SystemOne as a basis.
 
 Because SystemOne is originally written in the PHP programming 
 language which has been known to be slow, using a faster programming language 
@@ -191,95 +179,37 @@ by choosing a more feasible database system for sudden surges of requests.
 
 \section{Related Work}
 
-There is a limited number of papers that specifically discuss SystemOne. These papers
-mostly focus on the various modules that provide different kinds of functionality for SystemOne
-and the features to be created rather than the speed and feasibility of the use of the system.
-Suayan (1997) developed one of the first registration systems used in UPLB called the
-UPLB RegisNet \cite{suayan}. This system was designed to automate the pre-enlistment of subjects for
-students.
+There is a limited number of papers that specifically discuss SystemOne. These papers mostly focus on the various modules that provide different kinds of functionality for SystemOne and the features to be created rather than the speed and feasibility of the use of the system. Suayan (1997) developed one of the first registration systems used in UPLB called the UPLB RegisNet \cite{suayan}. This system was designed to automate the pre-enlistment of subjects for students.
 
-Meanwhile, the UPLB Academic Information System was created and had support for
-modularity. Through its modularity, various modules were created for it. Cruz (2001) created a
-Subjects module that gave it the ability to add, edit, and delete subjects from a list of subjects \cite{cruz} and
-Almodiel (2001) developed a module that allowed teachers to add, search, and view the grades of
-a student in their respective classes \cite{almodiel}. Enrique (2001) then developed a Schedule of Classes
-module that was responsible for managing and viewing the schedule of a subject, a room, or a
-teacher \cite{enrique}.
+Meanwhile, the UPLB Academic Information System was created and had support for modularity. Through its modularity, various modules were created for it. Cruz (2001) created a Subjects module that gave it the ability to add, edit, and delete subjects from a list of subjects \cite{cruz} and Almodiel (2001) developed a module that allowed teachers to add, search, and view the grades of a student in their respective classes \cite{almodiel}. Enrique (2001) then developed a Schedule of Classes module that was responsible for managing and viewing the schedule of a subject, a room, or a teacher \cite{enrique}.
 
-After a few years, Javier, et al. (2005) developed the first version of UPLB’s Online
-Registration System called SystemOne \cite{javier}. This system was also extensible through modularity. In
-this version, SystemOne used the Java programming language for implementing the Enlistor and
-Registrar module, PHP 5 for the Department module and MySQL as the Database Management
-System (DBMS).
+After a few years, Javier, et al. (2005) developed the first version of UPLB’s Online Registration System called SystemOne \cite{javier}. This system was also extensible through modularity. In this version, SystemOne used the Java programming language for implementing the Enlistor and Registrar module, PHP 5 for the Department module and MySQL as the Database Management System (DBMS).
 
-In 2010, the development of the UPLB SystemOne V2 began. This version also
-used the Java programming language and the MySQL DBMS and was also modular. However,
-the difference of this new system from the previous system was that even the core functions were
-divided into modules and was developed separately.
+In 2010, the development of the UPLB SystemOne V2 began. This version also used the Java programming language and the MySQL DBMS and was also modular. However, the difference of this new system from the previous system was that even the core functions were divided into modules and was developed separately.
 
-In 2012, the third and current version of SystemOne was developed by the SystemOne
-Development Team. This system, unlike the previous versions that used Java, used the PHP
-programming language along with the MySQL DBMS. Like the second version, this system
-supports modules and its core functions are also implemented as modules.
+In 2012, the third and current version of SystemOne was developed by the SystemOne Development Team. This system, unlike the previous versions that used Java, used the PHP programming language along with the MySQL DBMS. Like the second version, this system supports modules and its core functions are also implemented as modules.
 
-There was one study that focused on the speed and response time of SystemOne. Crespo
-(2014) wrote a study entitled “Comparing the Response and Rendering Time of PHP-based
-against Javascript-based SystemOne” \cite{crespo}. This study did a comparison on how much faster or slower
-SystemOne would be had it been implemented in Javascript using the NodeJS interpreter. Her
-study detailed the performance of her own Javascript-based implementation against the
-PHP-based implementation. The results of her study showed that the Javascript-based
-implementation yielded a 52 percent increase in overall speed.
+There was one study that focused on the speed and response time of SystemOne. Crespo (2014) wrote a study entitled “Comparing the Response and Rendering Time of PHP-based against Javascript-based SystemOne” \cite{crespo}. This study did a comparison on how much faster or slower SystemOne would be had it been implemented in Javascript using the NodeJS interpreter. Her study detailed the performance of her own Javascript-based implementation against the PHP-based implementation. The results of her study showed that the Javascript-based implementation yielded a 52 percent increase in overall speed.
 
-These results seem to be very promising considering the fact that NodeJS is known to not be
-able to take full advantage of a server computer that has multiple cores yet. This shows that
-SystemOne could have been faster if the right choices were made.
-These studies show a history of Online Registration Systems used in UPLB. It can be seen in
-the papers and articles cited that the use of the best and fastest technology has not really been
-given consideration.
+These results seem to be very promising considering the fact that NodeJS is known to not be able to take full advantage of a server computer that has multiple cores yet. This shows that SystemOne could have been faster if the right choices were made. These studies show a history of Online Registration Systems used in UPLB. It can be seen in the papers and articles cited that the use of the best and fastest technology has not really been given consideration.
 
 \section{Methodology}
 
 \subsection{Database}
 
-As an information system, the speed of the system depends heavily on the speed
-of the database management system since most of the requests that it handles
-do modification of data. Because of this, Redis was chosen as it is a database
-management system that has low runtime overhead and very fast request-serving
-speeds with benchmarks showing hundreds of thousands of requests per second for
-atomic functions.
+As an information system, the speed of the system depends heavily on the speed of the database management system since most of the requests that it handles do modification of data. Because of this, Redis was chosen as it is a database management system that has low runtime overhead and very fast request-serving speeds with benchmarks showing hundreds of thousands of requests per second for atomic functions.
 
-In order to achieve its speed, Redis sacrifices data integrity by writing
-and reading all data to and from the main memory of the system. This leads to possible
-data loss upon the occurance of a power interruption while Redis hasn't yet synchronized
-its data to permanent storage. However, this should not matter as long as the server
-has proper uninterruptible power supply systems in place. Even if such an event occurs,
-Redis uses sequential writing which will simply cancel out the latest writes causing a
-rollback rather than corrupting the whole database.
+In order to achieve its speed, Redis sacrifices data integrity by writing and reading all data to and from the main memory of the system. This leads to possible data loss upon the occurance of a power interruption while Redis hasn't yet synchronized its data to permanent storage. However, this should not matter as long as the server has proper uninterruptible power supply systems in place. Even if such an event occurs, Redis uses sequential writing which will simply cancel out the latest writes causing a rollback rather than corrupting the whole database.
 
 \subsection{Backend}
 
-The backend is a server that serves a Representational State Transfer (REST)
-Application Programming Interface (API) through the Hypertext Transfer Protocol
-(HTTP). The system's backend shall have multithreading support. A thread will be 
-spawned for every successful HTTP connection. This thread will handle its own
-associated connection and wait for a command before processing it and giving a 
-reply. If a command is not received or completed after a specified amount of
-time, a timeout will occur and the connection will be dropped along with its
-corresponding thread being deallocated from the memory. 
+The backend is a server that serves a Representational State Transfer (REST) Application Programming Interface (API) through the Hypertext Transfer Protocol (HTTP). The implementation of the backend utilizes multithreading in order to be able to use all processor cores for the processing of HTTP requests. A thread will be spawned for every successful HTTP connection. This thread will handle its own associated connection and wait for a command before processing it and giving a reply. If a command is not received or completed after a specified amount of time, a timeout will occur and the connection will be dropped along with its corresponding thread being deallocated from the memory. 
 
 \subsubsection{Conflict Checking}
 
-Every time a modification or addition is done on a student's schedule, the 
-backend will check for conflicts before executing the specified action. 
-In order to implement this, the students schedule is stored as a set of numbers
-that represent the index of each 15-minute block throughout the day beginning at
-7:00 AM. For example, the number represents the time from 7:00AM to 7:15AM. This
-representation is also applied to the schedule of each subject. 
+Every time a modification or addition is done on the schedule of a student, the backend will check for conflicts before executing the specified action. In order to implement this, the students schedule is stored as a set of numbers that represent the index of each 15-minute block throughout the day beginning at 7:00 AM. For example, the number represents the time from 7:00AM to 7:15AM. This representation is also applied to the schedule of each subject. 
 
-With the said representation of schedules, conflict checking is done by simply executing
-a set intersection of the schedule of the student and the schedule of the subject. If the
-resulting set does not have the size of zero, then it can be said that there is a conflict
-between the two schedules.
+With the said representation of schedules, conflict checking is done by simply executing a set intersection of the schedule of the student and the schedule of the subject. If the resulting set does not have the size of zero, then it can be said that there is a conflict between the two schedules.
 
 \subsubsection{Cross-Site HTTP Requests}
 
@@ -309,40 +239,22 @@ The static file server of the frontend can be served on a server with a caching 
 like CloudFlare enabled which would cache the static web application into its own 
 Content Delivery Network(CDN).
 
-Moreover, the static web application can also be cached on the browser of the client by
-specifying Cache-Control headers. We can go even further by utilizing IndexDB, AppCache,
-and localStorage capabilities to store the frontend application which will completely store
-the application in the browser making it accessible even if the static server is down.
+Moreover, the static web application can also be cached on the browser of the client by specifying Cache-Control headers. We can go even further by utilizing IndexDB, AppCache, and localStorage capabilities to store the frontend application which will completely store the application in the browser making it accessible even if the static server is down.
 
-This setup also lessens the number of connections that the server will receive lessening
-the number of threads running in the backend. This also alleviates the additional load 
-caused by students opening the site in multiple tabs and refreshing each tab repeatedly.
+This setup also lessens the number of connections that the server will receive lessening the number of threads running in the backend. This also alleviates the additional load caused by students opening the site in multiple tabs and refreshing each tab repeatedly.
 
-The design for the frontend tries to follow Google's Material Design 
-Specification although not strictly. Along with this, it shall support mobile
-platforms by implementing Responsive Design. 
+The design for the frontend tries to follow Material Design Specification by Google although not strictly. Along with this, it shall support mobile platforms by implementing Responsive Design. 
 
 %TODO: Should be 1/2
 \section{Evaluation}
 
 The system is evaluated by its stability and efficiency.
 
-The system's stability and efficiency were evaluated by running benchmarks on the system.
-Information such as requests per second, time per request, and transfer rate
-of each function are collected. The system was also be tested if it can 
-handle medium and heavy workloads by using load testing tools and services.
-These tests will use combinations of the different functions at ratios expected
-during actual use of the system. 
+The stability and efficiency of the system were evaluated by running benchmarks on the system. Information such as requests per second, time per request, and transfer rate of each function are collected. The system was also be tested if it can handle medium and heavy workloads by using load testing tools and services. These tests will use combinations of the different functions at ratios expected during actual use of the system. 
 
-Benchmarks were ran on both the API server and the database management system.
+Benchmarks were ran on both the API server and the database management system. The API server is benchmarked by running the tools wrk and apachebench. These two tools apply load to the server by running thousands of connections and recording either the number of requests done after a certain duration or the time it takes for a specified number of requests to finish.
 
-The API server is benchmarked by running the tools wrk and apachebench. These two tools apply 
-load to the server by running thousands of connections and recording either the number
-of requests done after a certain duration or the time it takes for a specified number of requests to finish.
-
-On the other hand, the database management system is benchmarked by running its own benchmarking tool
-that can benchmark server-side scripts and simulate its interaction with a specified number of keys which
-makes the evaluation of the speed of a script when there are a certain number of data on the server much easier.
+On the other hand, the database management system is benchmarked by running its own benchmarking tool that can benchmark server-side scripts and simulate its interaction with a specified number of keys which makes the evaluation of the speed of a script when there are a certain number of data on the server much easier.
 
 \section{Results and Discussion}
 \begin{tikzpicture}
@@ -378,27 +290,15 @@ makes the evaluation of the speed of a script when there are a certain number of
   Figure 2. API server requests per second on a Dual Core i7-5600U
 \end{center}
 
-In Figure 1, it is shown that the database management system, Redis, was able to serve an average of 83,400
-requests per second in an Intel Core i7-5600U. It should be noted that Redis is only able to utilize a single core
-so scaling through sharding will increase these numbers significantly. 
+In Figure 1, it is shown that the database management system, Redis, was able to serve an average of 83,400 requests per second on an Intel Core i7-5600U. It should be noted that Redis is only able to utilize a single core so scaling through sharding will linearly increase this serving speed.
 
-In Figure 2, it can be seen that the requests per second went down
-from the database average of 83,400 to 17,600 with low deviation on the same machine.
-This shows that the overhead caused by the API server is the bottleneck in this setup. 
-Early tests in the API server showed higher number of requests per second
-that can be blamed on the addition of URL parsers, data persistence middlewares, and JSON encoders
-that likely caused the reduction in the serving-speed. However, these benchmarks only shows its performance
-on a dual core system and the API server is highly multithreaded which implies that it could perform much faster
-on multicore and multiprocessor servers. Moreover, the API server can also be scaled by using a load balancer
-with it running on multiple servers that share the same database. 
+It is also noted that the command for retrieving the schedule is processed the fastest at 140,900 requests per second. This is because it is the least complex command that consists only of a single read request to the database after input validation. On the other hand, it can be seen that the command for cancellation of subjects is processed the slowest. This is due to it being the most complex command involving input validation, retrieval and verification of enlisted subject, actuall removal of enlisted subject, retrieval of the front element in the waitlist queue, conflict checking of subject against the schedule of the waitlister, and, finally, the enlistment of the waitlister.
+
+In Figure 2, it can be seen that the requests per second went down from the database average of 83,400 to 17,600 with low deviation on the same machine. This shows that the overhead caused by the API server is the bottleneck in this setup. Early tests in the API server showed higher number of requests per second that can be blamed on the addition of URL parsers, data persistence middlewares, and JSON encoders that likely caused the reduction in the serving-speed. However, these benchmarks only shows its performance on a dual core system and the API server is highly multithreaded which implies that it could perform much faster on multicore and multiprocessor servers. Moreover, the API server can also be scaled by using a load balancer with it running on multiple servers that share the same database. 
 
 \section{Summary and Conclusion}
 
-Based on the results of the system evaluation, we can conclude that the system is efficient enough to handle most 
-universities with large student 
-populations such as the University of the Philippines Los Baños that has around 13,710 students even if each student
-does an API requests once per second. It can be implied that it can also serve populations much larger than the benchmark
-results through scaling. 
+Based on the results of the system evaluation, we can conclude that the system is efficient enough to handle most universities with large student populations such as the University of the Philippines Los Baños that has around 13,710 students even if each student does an API requests once per second. It can be implied that it can also serve populations much larger than the benchmark results through scaling. 
 % REFERENCES FORMAT
 % References must be the same font size as other body text.
 \bibliographystyle{sigchi}
