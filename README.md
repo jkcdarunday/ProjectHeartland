@@ -20,14 +20,14 @@ multirust update
 ```
 
 **Build and Run**
-```
-#if no redis instance, run a redis instance
-#for debian:
-sudo service redis start
-#for systemd:
-sudo systemctl start redis
-ulimit -n 4096
-cargo run
+```bash
+$ #if no redis instance, run a redis instance
+$ #for debian:
+$ sudo service redis start
+$ #for systemd:
+$ sudo systemctl start redis
+$ ulimit -n 4096
+$ cargo run
 ```
 
 # API Specification
@@ -37,7 +37,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### /student/profile (TODO)
   Returns student profile information in the structure:
-```
+```javascript
 {
 	"result":0,
 	"data":{
@@ -55,7 +55,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### GET /student/schedule?session=[SID11]
   Returns the current schedule of the student in the structure:
-```
+```javascript
 {
 	"result":0,
 	"data":{
@@ -66,7 +66,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### PUT /student/schedule?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Enlists student to a section:
-```
+```javascript
 {
 	"result":0
 }
@@ -74,7 +74,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### DELETE /student/schedule/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Removes student from a section:
-```
+```javascript
 {
 	"result":0
 }
@@ -82,7 +82,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### GET /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Returns the position of a student in the waitlist:
-```
+```javascript
 {
 	"result":3
 }
@@ -90,7 +90,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### PUT /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Waitlists student to a section:
-```
+```javascript
 {
 	"result":0
 }
@@ -98,7 +98,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### DELETE /student/waitlist/?session=[SID]&subject=[SUBJECT]&section=[SECTION]
   Removes a student from the waitlist of a section:
-```
+```javascript
 {
 	"result":0
 }
@@ -106,7 +106,7 @@ Contains functions that are related to the student profile and schedule.
 
 ### /student/finalize (TODO)
   Finalizes the schedule of a student:
-```
+```javascript
 {
 	"result":0
 }
@@ -118,7 +118,7 @@ Contains functions that manages the session.
 
 ### POST /auth/login?username=&password=
   Tries to authenticate with given credentials and returns session key
-```
+```javascript
 {
 	"result":0,
 	"key": "YTk0ODkwNGYyZjBmNDc5YjhmODE5NzY5NGIzMDE"  
@@ -127,7 +127,7 @@ Contains functions that manages the session.
 
 ### DELETE /auth/logout?session=?
   Terminates session of given session key
-```
+```javascript
 {
 	"result":0
 }
@@ -138,7 +138,7 @@ Contains functions that deal with subjects
 
 ### GET /subjects/slots?subject=[SUBJECT]&sections=[SECTION],[SECTION],[SECTION]...
   Returns the number of slots left for the given sections:
-```
+```javascript
 {
 	"result":0,
 	"data": {"UV": 4, "UV-1L": 4}
@@ -147,7 +147,7 @@ Contains functions that deal with subjects
 
 ### PUT /subjects/create?session=[SID]&subject=[SUBJECT]&section=[SECTION]&max_slots=10&{lecture=A}
   Creates a new subject (ADMIN):
-```
+```javascript
 {
 	"result":4,
 }
