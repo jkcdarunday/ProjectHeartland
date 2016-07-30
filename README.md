@@ -13,10 +13,10 @@ Flash Crowd Online Student Enrollment System
 - [redis stable 3.2.0](http://redis.io/download)
 
 **Installation**
-```
-curl -sf https://raw.githubusercontent.com/brson/multirust/master/blastoff.sh | sh
-multirust set-default stable
-multirust update
+```bash
+$ curl -sf https://raw.githubusercontent.com/brson/multirust/master/blastoff.sh | sh
+$ multirust set-default stable
+$ multirust update
 ```
 
 **Build and Run**
